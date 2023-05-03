@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScoreBoard {
-    private int idUser;
+    private long idUser;
     private String username;
     private double score;
     private String exam;

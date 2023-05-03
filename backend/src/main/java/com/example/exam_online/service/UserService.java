@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    public List<User> findUserByIds(List<Integer> userIds) {
+    public List<User> findUserByIds(List<Long> userIds) {
         return userRepository.findAllById(userIds);
     }
 
@@ -114,5 +114,13 @@ public class UserService implements UserDetailsService {
             return ResponseEntity.ok("Email verified successfully!");
         }
         return ResponseEntity.badRequest().body("Error: Couldn't verify email");
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

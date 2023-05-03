@@ -41,7 +41,7 @@ public class ExportController {
         response.setHeader(headerKey, headerValue);
         List<ScoreBoard> list = new ArrayList<>();
         users.forEach(user -> {
-            list.add(new ScoreBoard(user.getIdUser(),user.getUsername(), resultService.getScore(user.getIdUser(), Math.toIntExact(exam.getId())), exam.getTitle()));
+            list.add(new ScoreBoard(user.getIdUser(),user.getUsername(), resultService.getScore(Math.toIntExact(user.getIdUser()), Math.toIntExact(exam.getId())), exam.getTitle()));
         });
 
         ScorePDFExporter exporter = new ScorePDFExporter(list);

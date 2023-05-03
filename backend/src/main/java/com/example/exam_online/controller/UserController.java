@@ -51,7 +51,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseHandler<String> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        System.out.println("login");
         // Valid username and password.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -59,7 +58,7 @@ public class UserController {
                         loginRequest.getPassword()
                 )
         );
-
+        // Cause turn on isEnable in UserDetails so user must had been activated can login
         // If don't catch exception that mean this is valid information
         // Set infor authentication into Security Context
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -71,6 +70,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseHandler<UserDto> registerUser(@RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
+        if (userService.existsByUsername(registerRequest.getUsername())) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "username is already taken");
+        }
+        if (userService.existsByEmail(registerRequest.getEmail())) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "email is already taken");
+        }
+
         User user = mapper.map(registerRequest, User.class);
         UserDto userDto1 =  mapper.map(user, UserDto.class);
         userService.register(user);

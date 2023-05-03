@@ -6,16 +6,16 @@ import java.util.List;
 
 public class ExportScoreRequest {
     @JsonProperty("user_ids")
-    private List<Integer> userIds;
+    private List<Long> userIds;
 
     @JsonProperty("exam_id")
     private Long examId;
 
-    public List<Integer> getUserIds() {
+    public List<Long> getUserIds() {
         return userIds;
     }
 
-    public void setUserIds(List<Integer> userIds) {
+    public void setUserIds(List<Long> userIds) {
         this.userIds = userIds;
     }
 
