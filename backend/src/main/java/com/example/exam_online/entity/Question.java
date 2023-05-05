@@ -1,5 +1,6 @@
 package com.example.exam_online.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
@@ -24,8 +25,7 @@ public class Question extends EntityAudit{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "questions")
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@JsonManagedReference
-	@JsonIgnore
+	@JsonBackReference
 	private Set<Questionnaire> questionnaires;
 
 }

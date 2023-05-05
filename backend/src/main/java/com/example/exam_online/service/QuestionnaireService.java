@@ -44,4 +44,8 @@ public class QuestionnaireService extends AbstractEntityAuditService<Questionnai
         list.forEach(qn -> result.add(qn.getQuestions()));
         return result;
     }
+
+    public int findMaxCode() {
+        return questionnaireRepository.findMaxCode();
+    }
 }
