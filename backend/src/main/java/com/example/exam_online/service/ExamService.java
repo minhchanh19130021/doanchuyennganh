@@ -24,7 +24,9 @@ public class ExamService {
     QuestionRepository questionRepository;
     @Autowired
     QuestionnaireService questionnaireService;
-
+     public void deleteExam(Exam exam) {
+         examRepository.delete(exam);
+     }
     public Exam findById(Long examId) {
         return examRepository.findById(examId).orElse(null);
     }

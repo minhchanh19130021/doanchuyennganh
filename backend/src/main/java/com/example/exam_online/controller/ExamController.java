@@ -22,6 +22,39 @@ public class ExamController {
     @Autowired
     private ExamService examService;
 
+    @Operation(description = "get exam")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "get successfully exam"),
+            @ApiResponse(responseCode = "404", description = "not found exam",
+                    content = @Content(schema = @Schema(implementation = ResponseHandler.class)))
+    })
+    @GetMapping("/getExam/{examId}")
+    public ResponseHandler<Exam> getExam(@PathVariable Long examId) throws CustomException {
+        Exam exam = examService.findById(examId);
+        if (exam == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Exam not found with id: " + examId);
+        }
+        ResponseHandler<Exam> responseHandler = new ResponseHandler<Exam>("oke", HttpStatus.OK.value(), exam);
+        return responseHandler;
+    }
+
+    @Operation(description = "delete exam")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "delete successfully exam"),
+            @ApiResponse(responseCode = "404", description = "not found exam",
+                    content = @Content(schema = @Schema(implementation = ResponseHandler.class)))
+    })
+    @DeleteMapping("/deleteExam/{examId}")
+    public ResponseHandler<Exam> deleteExam(@PathVariable Long examId) throws CustomException {
+        Exam exam = examService.findById(examId);
+        if (exam == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Exam not found with id: " + examId);
+        }
+        examService.deleteExam(exam);
+        ResponseHandler<Exam> responseHandler = new ResponseHandler<Exam>("oke", HttpStatus.OK.value(), null);
+        return responseHandler;
+    }
+
     @Operation(description = "create exam")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "create successfully exam"),
