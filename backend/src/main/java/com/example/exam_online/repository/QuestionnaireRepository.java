@@ -14,4 +14,7 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
 
     @Query("select qn from questionnaires qn where qn.auditInfo.createUserId = :userId and qn.code = :code")
     List<Questionnaire> findByCreateUserIdAndCode(long userId, long code);
+
+    @Query("select max(qn.code) from questionnaires qn")
+    int findMaxCode();
 }

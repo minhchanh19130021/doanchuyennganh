@@ -1,36 +1,27 @@
 package com.example.exam_online.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
-import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
-import static javax.persistence.ConstraintMode.PROVIDER_DEFAULT;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Collection;
 
 @Table
-@Entity(name ="exams")
+@Entity(name = "exams")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Exam extends EntityAudit {
-	@ManyToOne
-	@JoinColumn(name = "questionnaire_id", referencedColumnName = "id", foreignKey=@ForeignKey(NO_CONSTRAINT))
-	private Questionnaire questionnaire;
+    //	@ManyToOne
+//	@JoinColumn(name = "questionnaire_id", referencedColumnName = "id", foreignKey=@ForeignKey(NO_CONSTRAINT))
+//	private Questionnaire questionnaire;
 
-	@Column(name = "title")
-	private String title;
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private String title;
+    @OneToMany(mappedBy = "exam", cascade = {CascadeType.PERSIST})
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Collection<Questionnaire> questionnaires;
 }

@@ -1,5 +1,6 @@
 package com.example.exam_online.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class AuditInfo {
 	@Column(name = "create_user_id")
 	private Long createUserId;
