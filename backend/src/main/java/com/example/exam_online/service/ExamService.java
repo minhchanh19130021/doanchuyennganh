@@ -8,6 +8,7 @@ import com.example.exam_online.exception.CustomException;
 import com.example.exam_online.repository.ExamRepository;
 import com.example.exam_online.repository.QuestionRepository;
 import com.example.exam_online.request.CreateExamRequest;
+import com.example.exam_online.request.HandleExamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -68,5 +69,10 @@ public class ExamService {
             questionnaires.add(questionnaire);
         });
         return questionnaires;
+    }
+
+    public boolean handleExam(HandleExamRequest handleExamRequest) {
+        String answer = questionRepository.findAnswerById(handleExamRequest.getIdQuestion());
+        return answer != null && answer.equals(handleExamRequest.getAnswer());
     }
 }

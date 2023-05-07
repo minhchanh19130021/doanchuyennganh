@@ -28,4 +28,6 @@ public class Question extends EntityAudit{
 	@JsonBackReference
 	private Set<Questionnaire> questionnaires;
 
+	@Column(name ="result")
+	private String result;
 }
