@@ -8,3 +8,19 @@ export const findQuestionByCode = async (code) => {
     } catch (error) {}
 };
 
+export const findQuestionByUserAndCode = async (userId,code) => {
+    try {
+        const res = await request.get(
+            `/api/questionnaire/getQuestionsByUserIdAndCode/${userId}/${code}`,
+        );
+        return res.data;
+    } catch (error) {}
+};
+export const findQuestionsByExamId = async (examId) => {
+    try {
+        const res = await request.get(
+            `/api/questionnaire/findQuestionsByExamId/${examId}`,
+        );
+        return res.data;
+    } catch (error) {}
+};
