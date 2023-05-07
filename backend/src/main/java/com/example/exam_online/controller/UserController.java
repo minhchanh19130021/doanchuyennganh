@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
 @RestController
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseHandler<String> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseHandler<String> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Valid username and password.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -69,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseHandler<UserDto> registerUser(@RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
+    public ResponseHandler<UserDto> registerUser(@Valid @RequestBody RegisterRequest registerRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userService.existsByUsername(registerRequest.getUsername())) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "username is already taken");
         }

@@ -11,4 +11,6 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query(nativeQuery = true, value = "select * from questions order by rand() limit :totalNumberOfQuestions")
     List<Question> findQuestionByRandom(@Param("totalNumberOfQuestions") int totalNumberOfQuestions);
+    @Query(nativeQuery = true, value = "select result from questions where id = :idQuestion")
+    String findAnswerById(Integer idQuestion);
 }
