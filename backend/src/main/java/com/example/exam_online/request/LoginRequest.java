@@ -2,11 +2,15 @@ package com.example.exam_online.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
+
 public class LoginRequest {
     @JsonProperty("username")
+    @NotNull(message = "username is required")
     private String username;
 
     @JsonProperty("password")
+    @NotNull(message = "password is required")
     private String password;
 
     public String getUsername() {

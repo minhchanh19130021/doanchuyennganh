@@ -25,4 +25,12 @@ public class Questionnaire extends EntityAudit {
 	@ToString.Exclude
 	@JsonBackReference
 	private Question questions;
+
+	@ManyToOne
+	@JoinColumn(name = "id_exam")
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	@JsonBackReference
+	private Exam exam;
+
 }

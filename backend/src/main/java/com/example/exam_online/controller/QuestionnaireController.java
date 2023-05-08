@@ -31,8 +31,12 @@ public class QuestionnaireController {
     @GetMapping("/getQuestionnaireByCode/{code}")
     public ResponseHandler<List<Question>> getQuestionsByCode(@PathVariable long code) throws CustomException {
         List<Question> result = questionnaireService.getQuestionsFromCode(code);
-        ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>("successfully get questions from code",
-                                                                                              HttpStatus.OK.value(), result);
+        ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>(
+                "successfully get " +
+                        "questions from" +
+                        " code",
+                HttpStatus.OK.value(),
+                result);
         return responseHandler;
     }
 
@@ -43,10 +47,18 @@ public class QuestionnaireController {
                     content = @Content(schema = @Schema(implementation = ResponseHandler.class)))
     })
     @GetMapping("/getQuestionsByUserIdAndCode/{userId}/{code}")
-    public ResponseHandler<List<Question>> getQuestionsByUserIdAndCode(@PathVariable int userId, @PathVariable int code) throws CustomException {
+    public ResponseHandler<List<Question>> getQuestionsByUserIdAndCode(@PathVariable int userId,
+                                                                       @PathVariable int code) throws CustomException {
         List<Question> result = questionnaireService.getQuestionsByUserIdAndCode(userId, code);
-        ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>("successfully get questions from user id and code",
-                                                                                              HttpStatus.OK.value(), result);
+        ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>(
+                "successfully get " +
+                        "questions from" +
+                        " user id and " +
+                        "code",
+                HttpStatus.OK.value(),
+                result);
         return responseHandler;
     }
+
+
 }

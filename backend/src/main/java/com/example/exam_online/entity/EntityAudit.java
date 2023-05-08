@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 public abstract class EntityAudit {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	protected Long id;
 	

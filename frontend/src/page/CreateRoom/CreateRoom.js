@@ -1,18 +1,24 @@
 import { Form, Formik, useFormik } from 'formik';
-import moment from 'moment/moment';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState ,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from 'yup';
-import * as questionService from '~/services/questionService';
 import * as roomService from '~/services/roomService';
+import * as examService from '~/services/examService';
 function CreateRoom() {
     const [dataRoom, setDataRoom] = useState();
 
     const navigate = useNavigate();
 
     const buttonRef = useRef();
-
+    const [examList, setExamList] = useState([]);
+    useEffect(() => {
+        const fetchExam = async () => {
+            const re = await examService.findExamByUserId(1);
+            setExamList(re?.data);
+        };
+        fetchExam();
+    }, []);
     // useEffect(() => {
     //     const fetchApi = async () => {
     //         const re = await questionService.findQuestion();
@@ -40,20 +46,7 @@ function CreateRoom() {
             status: Yup.string().required('Thông tin bắt buộc'),
             code: Yup.string()
                 .required('Thông tin bắt buộc')
-                .matches(/^[1-9]\d*$/, 'Mã đề phải là số')
-                // .test(
-                //     'checkCode',
-                //     'Mã đề không tồn tại',
-                //     async function validateCode(value) {
-                //         const re = await questionService.findQuestionByCode(
-                //             value,
-                //         );
-                //         if (re === undefined) {
-                //             return false;
-                //         }
-                //         return true;
-                //     },
-                // ),
+                .matches(/^[1-9]\d*$/, 'Mã đề phải là số'),
         }),
         onSubmit: async (values) => {
             handleDate(new Date(values.startTime));
@@ -79,8 +72,6 @@ function CreateRoom() {
                 .catch((err) => {
                     console.log(err);
                 });
-
-       
         },
     });
     const handleDate = (dt) => {
@@ -154,7 +145,24 @@ function CreateRoom() {
                         >
                             Mã đề
                         </label>
-                        <input
+                        <select  
+                            id="code"
+                            name="code"
+                            onChange={formik.handleChange}
+                            value={formik.values.code}
+                            onBlur={formik.handleBlur}
+                            className={
+                                formik.touched.code && formik.errors.code
+                                    ? 'focus:shadow-input transition-basic h-12 w-full  rounded-lg  border border-[#ff4742] bg-[#eaf0f7] px-4 py-1 outline-none focus:border-[#ff4742]'
+                                    : 'mb-3 block w-full appearance-none rounded border  bg-gray-200 px-4 py-3 leading-tight text-gray-700 focus:bg-white focus:outline-none'
+                            }
+                            >
+                                <option value="" >Chọn mã đề</option>
+                            {examList?.map((e)=>
+                            <option value={e?.id} key={e?.id}>{e?.id}</option>
+                            )}
+                        </select>
+                        {/* <input
                             className={
                                 formik.touched.code && formik.errors.code
                                     ? 'focus:shadow-input transition-basic h-12 w-full  rounded-lg  border border-[#ff4742] bg-[#eaf0f7] px-4 py-1 outline-none focus:border-[#ff4742]'
@@ -167,7 +175,7 @@ function CreateRoom() {
                             onChange={formik.handleChange}
                             value={formik.values.code}
                             onBlur={formik.handleBlur}
-                        />
+                        /> */}
 
                         {formik.touched.code && formik.errors.code ? (
                             <p className="text-left text-xs italic text-red-500">

@@ -4,5 +4,7 @@ const routes = {
     signUp: '/signUp',
     createRoom: '/createRoom',
     room: '/room/:id',
+    user: '/user',
+
 };
 export default routes;

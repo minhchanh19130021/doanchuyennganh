@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionnaireService extends AbstractEntityAuditService<Questionnaire> implements IQuestionnaireService<Questionnaire> {
@@ -43,5 +44,11 @@ public class QuestionnaireService extends AbstractEntityAuditService<Questionnai
         List<Question> result = new ArrayList<Question>();
         list.forEach(qn -> result.add(qn.getQuestions()));
         return result;
+    }
+
+
+
+    public int findMaxCode() {
+        return questionnaireRepository.findMaxCode();
     }
 }
