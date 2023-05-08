@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/exam")
 @CrossOrigin
@@ -65,6 +67,19 @@ public class ExamController {
     public ResponseHandler<Exam> createExam(@RequestBody CreateExamRequest createExamRequest) throws CustomException {
         Exam exam = examService.createExam(createExamRequest);
         ResponseHandler<Exam> responseHandler = new ResponseHandler<Exam>("oke", HttpStatus.OK.value(), exam);
+        return responseHandler;
+    }
+
+    @GetMapping("/findExamsByUserId/{userId}")
+    public ResponseHandler findExamsByUserId(@PathVariable Long userId) throws CustomException {
+        ResponseHandler responseHandler = new ResponseHandler("oke", HttpStatus.OK.value(),
+                                                              examService.findExamsByUserId(userId));
+        return responseHandler;
+    }
+
+    @GetMapping("/getExams")
+    public ResponseHandler getExams() {
+        ResponseHandler responseHandler = new ResponseHandler("oke", HttpStatus.OK.value(), examService.getExams());
         return responseHandler;
     }
 }

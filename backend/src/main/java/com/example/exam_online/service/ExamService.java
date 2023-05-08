@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExamService {
@@ -25,12 +26,28 @@ public class ExamService {
     QuestionRepository questionRepository;
     @Autowired
     QuestionnaireService questionnaireService;
-     public void deleteExam(Exam exam) {
-         examRepository.delete(exam);
-     }
+
+    public void deleteExam(Exam exam) {
+        examRepository.delete(exam);
+    }
+
+    public List<Exam> getExams() {
+        return examRepository.findAll();
+    }
+
+    public List<Exam> findExamsByUserId(Long userId) throws CustomException {
+        List<Exam> examList =
+                examRepository.findAll().stream().filter(e -> e.getAuditInfo().getCreateUserId() == userId).collect(Collectors.toList());
+        if (examList.size() != 0) {
+            return examList;
+        }
+        throw new CustomException(HttpStatus.NOT_FOUND, "Can't find exam by user id = " + userId);
+    }
+
     public Exam findById(Long examId) {
         return examRepository.findById(examId).orElse(null);
     }
+
 
     public Exam createExam(CreateExamRequest createExamRequest) throws CustomException {
         checkEnoughQuestionsToCreate(createExamRequest.getTotalNumberOfQuestionsInExam());
