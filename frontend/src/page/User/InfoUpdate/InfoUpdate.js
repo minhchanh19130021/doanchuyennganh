@@ -1,37 +1,34 @@
-import { Formik, Form, useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 function InfoUpdate() {
 
-    const formik = useFormik({
-        initialValues: {
-            email:'',
-            name: '',
-            phone: '',
-            birthday: '',
-        },
-        validationSchema: Yup.object({
-            name: Yup.string().required('Thông tin bắt buộc').min(4, 'Tên quá ngắn').max(16, 'Tên quá dài'),
-            phone: Yup.string().required('Thông tin bắt buộc'),
-            birthday: Yup.string(),
-        }),
-        onSubmit: (values) => {
+    // const formik = useFormik({
+    //     initialValues: {
+    //         email:'',
+    //         name: '',
+    //         phone: '',
+    //         birthday: '',
+    //     },
+    //     validationSchema: Yup.object({
+    //         name: Yup.string().required('Thông tin bắt buộc').min(4, 'Tên quá ngắn').max(16, 'Tên quá dài'),
+    //         phone: Yup.string().required('Thông tin bắt buộc'),
+    //         birthday: Yup.string(),
+    //     }),
+    //     onSubmit: (values) => {
            
-        },
-    });
-    const notifySuccess = (msg) => {
-        toast.success(msg, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-        });
-    };
+    //     },
+    // });
+    // const notifySuccess = (msg) => {
+    //     toast.success(msg, {
+    //         position: 'top-right',
+    //         autoClose: 5000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: 'light',
+    //     });
+    // };
 
     return (
         <div className="-mt-10 flex flex-col items-center justify-center ">

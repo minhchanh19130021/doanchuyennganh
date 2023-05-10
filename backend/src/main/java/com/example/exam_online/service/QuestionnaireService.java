@@ -36,6 +36,16 @@ public class QuestionnaireService extends AbstractEntityAuditService<Questionnai
         return result;
     }
 
+    public List<Question> getQuestionsFromExamId(long examId) throws CustomException {
+        List<Questionnaire> list = questionnaireRepository.findByExamId(examId);
+        if (list.size() == 0) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "not found questions by exam id = " + examId);
+        }
+        List<Question> result = new ArrayList<Question>();
+        list.forEach(qn -> result.add(qn.getQuestions()));
+        return result;
+    }
+
     public List<Question> getQuestionsByUserIdAndCode(int userId, int code) throws CustomException {
         List<Questionnaire> list = questionnaireRepository.findByCreateUserIdAndCode(userId, code);
         if (list.size() == 0) {
@@ -45,7 +55,6 @@ public class QuestionnaireService extends AbstractEntityAuditService<Questionnai
         list.forEach(qn -> result.add(qn.getQuestions()));
         return result;
     }
-
 
 
     public int findMaxCode() {

@@ -7,8 +7,16 @@ export const findQuestionByCode = async (code) => {
         return res.data;
     } catch (error) {}
 };
+export const findQuestionByExamId = async (examId) => {
+    try {
+        const res = await request.get(
+            `/api/questionnaire/getQuestionsByExamId/${examId}`,
+        );
+        return res.data;
+    } catch (error) {}
+};
 
-export const findQuestionByUserAndCode = async (userId,code) => {
+export const findQuestionByUserAndCode = async (userId, code) => {
     try {
         const res = await request.get(
             `/api/questionnaire/getQuestionsByUserIdAndCode/${userId}/${code}`,

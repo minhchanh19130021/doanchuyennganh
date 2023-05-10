@@ -1,14 +1,7 @@
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 function Header() {
-    const user = {
-        id: 1,
-        name: 'Nguyen Van A',
-        email: 'van@gmail.com',
-        password: '123',
-    };
-    const [showEl, setShowEl] = useState(false);
+  
     return (
         <div className="padding-responsive flex w-full items-center justify-between">
             <NavLink to="/">
@@ -68,16 +61,16 @@ function Header() {
                     Tạo phòng
                 </NavLink>
                 <NavLink
-                    to=""
+                    to="/roomList"
                     className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
                 >
-                    Khóa học online
+                    Danh sách phòng thi
                 </NavLink>
                 <NavLink
-                    to=""
+                    to="/user"
                     className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
                 >
-                    Đề thi online
+                    Quản lý đề thi
                 </NavLink>
                 <NavLink
                     to=""

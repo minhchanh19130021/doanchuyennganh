@@ -1,10 +1,8 @@
-import { Button, Modal, Table } from 'flowbite-react';
-import React from 'react';
 import { useState } from 'react';
-import FullExam from './FullExam';
 import AddExam from './AddExam';
 import DeleteExam from './DeleteExam';
 import EditExam from './EditExam';
+import FullExam from './FullExam';
 
 function Tab() {
     const [toggleState, setToggleState] = useState(1);
