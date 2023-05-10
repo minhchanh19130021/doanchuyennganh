@@ -11,6 +11,8 @@ import java.util.*;
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
     @Query("select qn from questionnaires qn where qn.code = :code")
     List<Questionnaire> findByCode(long code);
+    @Query("select qn from questionnaires qn where qn.exam.id = :examId")
+    List<Questionnaire> findByExamId(long examId);
 
     @Query("select qn from questionnaires qn where qn.auditInfo.createUserId = :userId and qn.code = :code")
     List<Questionnaire> findByCreateUserIdAndCode(long userId, long code);

@@ -40,6 +40,16 @@ public class QuestionnaireController {
         return responseHandler;
     }
 
+    @GetMapping("/getQuestionsByExamId/{examId}")
+    public ResponseHandler<List<Question>> getQuestionsByExamId(@PathVariable long examId) throws CustomException {
+        List<Question> result = questionnaireService.getQuestionsFromExamId(examId);
+        ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>(
+                "Successfully getQuestionsByExamId",
+                HttpStatus.OK.value(),
+                result);
+        return responseHandler;
+    }
+
     @Operation(description = "get questions from code and id exam")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "successfully get questions from user id and code"),

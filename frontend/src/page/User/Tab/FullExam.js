@@ -83,50 +83,71 @@ function FullExam() {
                                             </tr>
                                         </thead>
                                         <tbody className="h-[100px] overflow-hidden">
-                                            <tr className="grid grid-cols-8 border-b bg-white dark:border-gray-700 dark:bg-gray-900">
-                                                <th
-                                                    scope="row"
-                                                    className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                                                >
-                                                    1
-                                                </th>
-                                                <td className="col-span-2 px-6 py-4">
-                                                    <p>
-                                                        This text is in the blue
-                                                        color.
-                                                    </p>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <p>
-                                                        This text is in the blue
-                                                        color.
-                                                    </p>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <p>
-                                                        This text is in the blue
-                                                        color.
-                                                    </p>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <p>
-                                                        This text is in the blue
-                                                        color.
-                                                    </p>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <p>
-                                                        This text is in the blue
-                                                        color.
-                                                    </p>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <p>
-                                                        This text is in the blue
-                                                        color.
-                                                    </p>
-                                                </td>
-                                            </tr>
+                                            {examDetail?.map((e) => {
+                                                const isTrue = e?.answers?.find(
+                                                    (a) => a?.correct === true,
+                                                );
+                                                console.log(isTrue);
+                                                return (
+                                                    <tr
+                                                        key={e?.id}
+                                                        className="grid grid-cols-8 border-b bg-white dark:border-gray-700 dark:bg-gray-900"
+                                                    >
+                                                        <th
+                                                            scope="row"
+                                                            className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                                                        >
+                                                            {e?.id}
+                                                        </th>
+                                                        <td className="col-span-2 px-6 py-4">
+                                                            <p>{e?.content}</p>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <p>
+                                                                {
+                                                                    e
+                                                                        ?.answers[0]
+                                                                        ?.content
+                                                                }
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <p>
+                                                                {
+                                                                    e
+                                                                        ?.answers[1]
+                                                                        ?.content
+                                                                }
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <p>
+                                                                {
+                                                                    e
+                                                                        ?.answers[2]
+                                                                        ?.content
+                                                                }
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <p>
+                                                                {
+                                                                    e
+                                                                        ?.answers[3]
+                                                                        ?.content
+                                                                }
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <p>
+                                                                {
+                                                                    isTrue?.content
+                                                                }
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
                                         </tbody>
                                     </table>
                                     <button
@@ -164,7 +185,7 @@ function FullExam() {
                     </tr>
                 </thead>
                 <tbody>
-                    {examList?.map((e,index) => (
+                    {examList?.map((e, index) => (
                         <tr
                             className="border-b bg-gray-50 dark:border-gray-700 dark:bg-gray-800"
                             key={index}
@@ -186,13 +207,14 @@ function FullExam() {
                                 <button
                                     type="button"
                                     className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                                    onClick={async() => {
-                                        setShowModal(true)
-                                        
-                                        // await questionService.findQuestionsByExamId(e?.id).then((res)=>{
-                                        //     console.log(res)
-                                        //     setExamDetail(res?.data)
-                                        // })
+                                    onClick={async () => {
+                                        setShowModal(true);
+
+                                        await questionService
+                                            .findQuestionByExamId(e?.id)
+                                            .then((res) => {
+                                                setExamDetail(res?.data);
+                                            });
                                     }}
                                 >
                                     Xem
