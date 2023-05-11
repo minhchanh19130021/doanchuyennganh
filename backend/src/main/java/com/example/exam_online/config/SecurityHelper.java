@@ -1,5 +1,6 @@
 package com.example.exam_online.config;
 
+import com.example.exam_online.dto.CustomUserDetails;
 import com.example.exam_online.entity.User;
 import com.example.exam_online.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class SecurityHelper {
 		User user;
 		//that mean user anonymous
 		if(!(authentication instanceof AnonymousAuthenticationToken)) {
-			user = (User) authentication.getPrincipal();
+			CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+			user = userRepository.findByUsername(customUserDetails.getUsername());
 		} else {
 			user = new User();
 		}

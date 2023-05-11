@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomDto {
+	private Long roomId;
 	private String roomName;
 	private LocalDateTime startAt;
 	private int time;
@@ -38,6 +39,7 @@ public class RoomDto {
 		this.roomName = room.getName();
 		this.startAt = room.getStartAt();
 		this.time = room.getSeconds();
+		this.roomId = room.getId();
 	}
 	
 }

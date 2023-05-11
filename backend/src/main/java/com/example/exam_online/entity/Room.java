@@ -30,6 +30,10 @@ public class Room extends EntityAudit implements IEntityResponse {
 	@Enumerated(EnumType.STRING)
 	private RoomStatus status = RoomStatus.OPEN;
 	
+	@ManyToOne
+	@JoinColumn(name = "exam_id")
+	private Exam exam;
+	
 	public Room() {
 		code = generateCode();
 	}

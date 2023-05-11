@@ -1,7 +1,10 @@
 package com.example.exam_online.controller;
 
+import com.example.exam_online.config.SecurityHelper;
 import com.example.exam_online.dto.RoomDto;
 import com.example.exam_online.entity.Room;
+import com.example.exam_online.entity.RoomExamUser;
+import com.example.exam_online.entity.User;
 import com.example.exam_online.exception.CustomException;
 import com.example.exam_online.request.RoomRequest;
 import com.example.exam_online.response.ResponseHandler;
@@ -25,10 +28,15 @@ public class RoomController {
 	
 	@GetMapping("/getARoom/{roomId}")
 	public ResponseHandler<Room> getRoom (@PathVariable Long roomId) {
-		System.out.println(roomId);
-		Room room = roomService.getRoomById(roomId);
-		ResponseHandler<Room> responseHandler = new ResponseHandler<Room>("successfully found room",
-				HttpStatus.OK.value(), room);
+		ResponseHandler<Room> responseHandler;
+		try {
+			Room room = roomService.getRoomById(roomId);
+			responseHandler = new ResponseHandler<Room>("successfully found room",
+					HttpStatus.OK.value(), room);
+		} catch (Exception e) {
+			responseHandler = new ResponseHandler<Room>("not found room with id: " + roomId,
+					HttpStatus.NOT_FOUND.value(), null);
+		}
 		return responseHandler;
 	}
 	
@@ -75,5 +83,25 @@ public class RoomController {
 					HttpStatus.NOT_FOUND.value(), null);
 		}
 	}
+	
+	@PostMapping("addUserToRoom/{roomId}")
+	public ResponseHandler<RoomExamUser> addUserToRoom(@PathVariable Long roomId) {
+		User user = SecurityHelper.currentUser();
+		ResponseHandler responseHandler;
+		Room room;
+		try {
+			room = roomService.getRoomById(roomId);
+			RoomExamUser roomExamUser = new RoomExamUser();
+			roomExamUser.setUser(user);
+			roomExamUser.setRoom(room);
+			responseHandler = new ResponseHandler<>("Add User to Room success",
+					HttpStatus.OK.value() , null);
+		}catch (Exception ex) {
+			responseHandler = new ResponseHandler<>("Can not find room id : " + roomId,
+					HttpStatus.NOT_FOUND.value() , null);
+		}
+		return responseHandler;
+	}
+	
 	
 }
