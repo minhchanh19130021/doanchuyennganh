@@ -6,6 +6,7 @@ import com.example.exam_online.entity.Room;
 import com.example.exam_online.entity.RoomExamUser;
 import com.example.exam_online.entity.User;
 import com.example.exam_online.exception.CustomException;
+import com.example.exam_online.request.LeaveRoomRequest;
 import com.example.exam_online.request.RoomRequest;
 import com.example.exam_online.response.ResponseHandler;
 import com.example.exam_online.service.IRoomService;
@@ -14,6 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping("/room")
@@ -25,7 +29,33 @@ public class RoomController {
 	private UserService userService;
 	@Autowired
 	private ModelMapper mapper;
-	
+
+	@PutMapping("/{roomId}/leave")
+	public ResponseHandler<String> leaveRoom(@PathVariable Long roomId, @RequestBody LeaveRoomRequest request) throws CustomException {
+		ResponseHandler<String> responseHandler;
+		Room room = roomService.getRoomById(roomId);
+		if (room == null) {
+			return responseHandler = new ResponseHandler<String>("Phòng thi không tồn tại",
+					HttpStatus.NOT_FOUND.value(),null);
+		}
+		User user = userService.findById(request.getUserId());
+		if (user == null) {
+			return responseHandler = new ResponseHandler<String>("User không tồn tại",
+					HttpStatus.NOT_FOUND.value(),null);
+		}
+
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime endTime = room.getStartAt().plus(room.getSeconds(), ChronoUnit.SECONDS);
+		if (now.isBefore(endTime)) {
+			return responseHandler = new ResponseHandler<String>("Chưa hết thời gian làm bài",
+					HttpStatus.OK.value(),null);
+		}
+		room.setStatus(Room.RoomStatus.DONE);
+		roomService.updateEntityAudit(room);
+		return responseHandler = new ResponseHandler<String>("Rời phòng thi thành công",
+				HttpStatus.OK.value(),null);
+	}
+
 	@GetMapping("/getARoom/{roomId}")
 	public ResponseHandler<Room> getRoom (@PathVariable Long roomId) {
 		ResponseHandler<Room> responseHandler;
@@ -102,6 +132,7 @@ public class RoomController {
 		}
 		return responseHandler;
 	}
-	
+
+
 	
 }
