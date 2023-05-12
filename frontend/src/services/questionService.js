@@ -7,7 +7,7 @@ export const findQuestionByCode = async (code) => {
 };
 export const findQuestionByExamId = async (examId) => {
     try {
-        const res = await request.get(`/api/questionnaire/getQuestionsByExamId/${examId}`);
+        const res = await request.get(`/api/questionnaire/getQuestionnaireByExamId/${examId}`);
         return res.data;
     } catch (error) {}
 };

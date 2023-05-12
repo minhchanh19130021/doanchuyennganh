@@ -3,7 +3,7 @@ import Button from './Button';
 function QuestionInEditExam(props) {
     return (
         <tr className="grid grid-cols-9 border-b bg-white dark:border-gray-700 dark:bg-gray-900">
-            <td scope="row" className="px-6 py-3">
+            <td  className="px-6 py-3">
                 <Button
                     type={props?.type}
                     questions={props?.questions}
@@ -26,7 +26,7 @@ function QuestionInEditExam(props) {
                     className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                 />
             </td>
-            {props?.question?.answers?.map((a, index) => {
+            {props?.question?.answers?.sort((a,b)=>a.id-b.id)?.map((a, index) => {
                 return (
                     <td key={index} className="px-6 py-4">
                         <textarea
