@@ -1,5 +1,6 @@
 package com.example.exam_online.repository;
 
+import com.example.exam_online.entity.Question;
 import com.example.exam_online.entity.Questionnaire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

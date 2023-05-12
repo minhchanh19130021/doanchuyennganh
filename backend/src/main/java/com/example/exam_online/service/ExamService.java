@@ -8,14 +8,14 @@ import com.example.exam_online.exception.CustomException;
 import com.example.exam_online.repository.ExamRepository;
 import com.example.exam_online.repository.QuestionRepository;
 import com.example.exam_online.request.CreateExamRequest;
+import com.example.exam_online.request.EditExamRequest;
 import com.example.exam_online.request.HandleExamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +26,8 @@ public class ExamService {
     QuestionRepository questionRepository;
     @Autowired
     QuestionnaireService questionnaireService;
+    @Autowired
+    private QuestionService questionService;
 
     public void deleteExam(Exam exam) {
         examRepository.delete(exam);
@@ -91,5 +93,52 @@ public class ExamService {
     public boolean handleExam(HandleExamRequest handleExamRequest) {
         String answer = questionRepository.findAnswerById(handleExamRequest.getIdQuestion());
         return answer != null && answer.equals(handleExamRequest.getAnswer());
+    }
+
+    public void saveNewQuestionToExam(Exam exam, Question question, long userId) {
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setQuestions(question);
+        questionnaire.setExam(exam);
+        questionnaire.setCode(exam.getQuestionnaires().stream().findFirst().get().getCode());
+        LocalDateTime currentTime = LocalDateTime.now();
+        question.getAuditInfo().setChangeDate(currentTime);
+        questionnaire.setAuditInfo(new AuditInfo(userId, currentTime, 0L, currentTime));
+        questionnaireService.saveANewQuestionnaire(questionnaire);
+        exam.getQuestionnaires().add(questionnaire);
+        examRepository.save(exam);
+    }
+
+    public List<Question> edit(EditExamRequest editExamRequest) throws CustomException {
+        Exam exam = examRepository.findById(editExamRequest.getId()).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, ""));
+        exam.setTitle(editExamRequest.getTitle());
+        // delete questions
+        Collection<Questionnaire> deleteQuestions =  deleteQuestionFromExam(exam, editExamRequest.getQuestionIdListToDelete());
+        exam.getQuestionnaires().clear();
+        exam.getQuestionnaires().addAll(deleteQuestions);
+        // add question
+        addQuestion(exam, editExamRequest.getQuestionIdListToAdd());
+        examRepository.save(exam);
+        return questionnaireService.getQuestionsFromExamId(exam.getId());
+    }
+
+    private Collection<Questionnaire> deleteQuestionFromExam(Exam exam, List<Long> questionIdListToDelete) {
+        Collection<Questionnaire> questionnaires = exam.getQuestionnaires().stream()
+                .filter(q -> !questionIdListToDelete.contains(q.getQuestions().getId())).collect(Collectors.toList());
+        return questionnaires;
+    }
+
+    private void addQuestion(Exam exam, List<Long> questionIdListToAdd) throws CustomException {
+        for (Long qId: questionIdListToAdd) {
+            Question question = questionService.findById(qId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, ""));
+            Questionnaire questionnaire = new Questionnaire();
+            questionnaire.setQuestions(question);
+            questionnaire.setExam(exam);
+            questionnaire.setCode(exam.getQuestionnaires().stream().findFirst().get().getCode());
+            LocalDateTime currentTime = LocalDateTime.now();
+            question.getAuditInfo().setChangeDate(currentTime);
+            questionnaire.setAuditInfo(new AuditInfo(1L, currentTime, 0L, currentTime));
+            questionnaireService.saveANewQuestionnaire(questionnaire);
+            exam.getQuestionnaires().add(questionnaire);
+        }
     }
 }

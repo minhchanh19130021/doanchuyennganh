@@ -1,10 +1,13 @@
 package com.example.exam_online.controller;
 
 import com.example.exam_online.entity.Exam;
+import com.example.exam_online.entity.Question;
 import com.example.exam_online.exception.CustomException;
 import com.example.exam_online.request.CreateExamRequest;
+import com.example.exam_online.request.EditExamRequest;
 import com.example.exam_online.response.ResponseHandler;
 import com.example.exam_online.service.ExamService;
+import com.example.exam_online.service.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +26,8 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+    @Autowired
+    private QuestionService questionService;
 
     @Operation(description = "get exam")
     @ApiResponses({
@@ -80,6 +85,13 @@ public class ExamController {
     @GetMapping("/getExams")
     public ResponseHandler getExams() {
         ResponseHandler responseHandler = new ResponseHandler("oke", HttpStatus.OK.value(), examService.getExams());
+        return responseHandler;
+    }
+
+    @PutMapping("/edit")
+    public ResponseHandler<List<Question>> edit(@RequestBody EditExamRequest editExamRequest) throws CustomException {
+        List<Question> questionList = examService.edit(editExamRequest);
+        ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>("", HttpStatus.OK.value(), questionList);
         return responseHandler;
     }
 }
