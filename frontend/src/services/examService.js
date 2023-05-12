@@ -50,3 +50,16 @@ export const deleteExam = async (examId) => {
         console.log(error?.response?.data); // delete when deploy
     }
 };
+
+export const edit = async (tmp, title, examId) => {
+    try {
+        const res = await request.put(`api/exam/edit`, {
+            id: examId,
+            title: title,
+            questionIdListToAdd: tmp?.add,
+            questionIdListToDelete: tmp?.delete});
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data); // delete when deploy
+    }
+};
