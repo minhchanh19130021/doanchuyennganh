@@ -21,6 +21,8 @@ public class RoomDto {
 	private String roomName;
 	private LocalDateTime startAt;
 	private int time;
+	
+	private String code;
 
 	private Room.RoomStatus status;
 	private UserDto createdUser;
@@ -40,6 +42,7 @@ public class RoomDto {
 		this.startAt = room.getStartAt();
 		this.time = room.getSeconds();
 		this.roomId = room.getId();
+		this.code = room.getCode();
 	}
 	
 }
