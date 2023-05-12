@@ -130,9 +130,10 @@ public class RoomController {
 		}
 	}
 	
-	@PostMapping("addUserToRoom")
-	public ResponseHandler<RoomExamUser> addUserToRoom(@RequestBody RoomExamReqest roomExamReqest) {
-		User user = SecurityHelper.currentUser();
+	@PostMapping("/addUserToRoom")
+	public ResponseHandler<RoomExamUser> addUserToRoom(@RequestBody RoomExamReqest roomExamReqest) throws CustomException {
+//		User user = SecurityHelper.currentUser();
+		User user = userService.findById(1L);
 		ResponseHandler responseHandler;
 		Room room;
 		try {

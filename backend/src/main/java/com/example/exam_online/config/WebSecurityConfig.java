@@ -14,13 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
-
 
 
     @Bean
@@ -56,9 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/*", "/api/questionnaire/**", "/api/exam/**", "/api/question/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll() // Allow all to access this url
+                .antMatchers("/api/auth/*", "/api/questionnaire/**", "/api/exam/**", "/api/question/**", "/v3/api" +
+                        "-docs/**", "/swagger-ui/**", "/room/**").permitAll() // Allow all to access this url
                 .anyRequest().authenticated(); // All request except 'api/auth/login' must be authenticated
         // Add other classs to check jwt
-         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

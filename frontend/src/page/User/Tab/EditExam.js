@@ -163,7 +163,7 @@ function EditExam() {
                                             </tr>
                                         </thead>
                                         <tbody className="h-[100px] overflow-hidden">
-                                            {questions?.map((e, i) => {
+                                            {questions?.sort((a,b)=>a.id-b.id)?.map((e, i) => {
                                                 return (
                                                     <QuestionInEditExam
                                                         key={i}
