@@ -26,10 +26,10 @@ public class QuestionnaireService extends AbstractEntityAuditService<Questionnai
         return questionnaireRepository;
     }
 
-    public List<Question> getQuestionsFromCode(long code) throws CustomException {
-        List<Questionnaire> list = questionnaireRepository.findByCode(code);
+    public List<Question> getQuestionsFromExamId(long examId) throws CustomException {
+        List<Questionnaire> list = questionnaireRepository.findByExamId(examId);
         if (list.size() == 0) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "not found questions by this code");
+            throw new CustomException(HttpStatus.NOT_FOUND, "not found questions by exam id = " + examId);
         }
         List<Question> result = new ArrayList<Question>();
         list.forEach(qn -> result.add(qn.getQuestions()));
@@ -46,9 +46,11 @@ public class QuestionnaireService extends AbstractEntityAuditService<Questionnai
         return result;
     }
 
-
-
     public int findMaxCode() {
         return questionnaireRepository.findMaxCode();
+    }
+
+    public void saveANewQuestionnaire(Questionnaire questionnaire) {
+        questionnaireRepository.save(questionnaire);
     }
 }

@@ -1,8 +1,13 @@
 package com.example.exam_online.controller;
 
+import com.example.exam_online.config.SecurityHelper;
 import com.example.exam_online.dto.RoomDto;
 import com.example.exam_online.entity.Room;
+import com.example.exam_online.entity.RoomExamUser;
+import com.example.exam_online.entity.User;
 import com.example.exam_online.exception.CustomException;
+import com.example.exam_online.request.LeaveRoomRequest;
+import com.example.exam_online.request.RoomExamReqest;
 import com.example.exam_online.request.RoomRequest;
 import com.example.exam_online.response.ResponseHandler;
 import com.example.exam_online.service.IRoomService;
@@ -10,7 +15,11 @@ import com.example.exam_online.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 
 @RestController
 @RequestMapping("/room")
@@ -22,13 +31,58 @@ public class RoomController {
 	private UserService userService;
 	@Autowired
 	private ModelMapper mapper;
-	
+
+	@PutMapping("/{roomId}/leave")
+	public ResponseHandler<String> leaveRoom(@PathVariable Long roomId, @RequestBody LeaveRoomRequest request) throws CustomException {
+		ResponseHandler<String> responseHandler;
+		Room room = roomService.getRoomById(roomId);
+		if (room == null) {
+			return responseHandler = new ResponseHandler<String>("Phòng thi không tồn tại",
+					HttpStatus.NOT_FOUND.value(),null);
+		}
+		User user = userService.findById(request.getUserId());
+		if (user == null) {
+			return responseHandler = new ResponseHandler<String>("User không tồn tại",
+					HttpStatus.NOT_FOUND.value(),null);
+		}
+
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime endTime = room.getStartAt().plus(room.getSeconds(), ChronoUnit.SECONDS);
+		if (now.isBefore(endTime)) {
+			return responseHandler = new ResponseHandler<String>("Chưa hết thời gian làm bài",
+					HttpStatus.OK.value(),null);
+		}
+		room.setStatus(Room.RoomStatus.DONE);
+		roomService.updateEntityAudit(room);
+		return responseHandler = new ResponseHandler<String>("Rời phòng thi thành công",
+				HttpStatus.OK.value(),null);
+	}
+
 	@GetMapping("/getARoom/{roomId}")
 	public ResponseHandler<Room> getRoom (@PathVariable Long roomId) {
-		System.out.println(roomId);
-		Room room = roomService.getRoomById(roomId);
-		ResponseHandler<Room> responseHandler = new ResponseHandler<Room>("successfully found room",
-				HttpStatus.OK.value(), room);
+		ResponseHandler<Room> responseHandler;
+		try {
+			Room room = roomService.getRoomById(roomId);
+			responseHandler = new ResponseHandler<Room>("successfully found room",
+					HttpStatus.OK.value(), room);
+		} catch (Exception e) {
+			responseHandler = new ResponseHandler<Room>("not found room with id: " + roomId,
+					HttpStatus.NOT_FOUND.value(), null);
+		}
+		return responseHandler;
+	}
+	
+	@GetMapping("/getAllRoom")
+	public ResponseHandler<List<Room>> getRooms () {
+		ResponseHandler<List<Room>> responseHandler;
+		try {
+			List<Room> rooms = roomService.getAllRooms();
+			responseHandler = new ResponseHandler<List<Room>>("successfully found room",
+					HttpStatus.OK.value(), rooms);
+		} catch (Exception e) {
+			responseHandler = new ResponseHandler<List<Room>>(e.getMessage(),
+					HttpStatus.NOT_FOUND.value(), null);
+		}
 		return responseHandler;
 	}
 	
@@ -75,5 +129,31 @@ public class RoomController {
 					HttpStatus.NOT_FOUND.value(), null);
 		}
 	}
+	
+	@PostMapping("/addUserToRoom")
+	public ResponseHandler<RoomExamUser> addUserToRoom(@RequestBody RoomExamReqest roomExamReqest) throws CustomException {
+//		User user = SecurityHelper.currentUser();
+		User user = userService.findById(1L);
+		ResponseHandler responseHandler;
+		Room room;
+		try {
+			room = roomService.getRoomById(roomExamReqest.getRoomId());
+			if(!roomExamReqest.getCode().equals(room.getCode())) {
+				return new ResponseHandler<>("Room code invalid: ",
+						HttpStatus.BAD_REQUEST.value() , null);
+			}
+			RoomExamUser roomExamUser = new RoomExamUser();
+			roomExamUser.setUser(user);
+			roomExamUser.setRoom(room);
+			responseHandler = new ResponseHandler<>("Add User to Room success",
+					HttpStatus.OK.value() , null);
+		}catch (Exception ex) {
+			responseHandler = new ResponseHandler<>("Can not find room id : " + roomExamReqest.getRoomId(),
+					HttpStatus.NOT_FOUND.value() , null);
+		}
+		return responseHandler;
+	}
+
+
 	
 }

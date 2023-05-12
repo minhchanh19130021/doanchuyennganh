@@ -26,7 +26,7 @@ public class Answer extends EntityAudit {
 	@Column(name = "content")
 	private String content;
 	
-	@Column(name = "correct")
-	@Type(type = "org.hibernate.type.YesNoType")
+	@Column(name = "correct", columnDefinition="tinyint(1) default 1")
+//	@Type(type = "org.hibernate.type.YesNoType")
 	private boolean correct;
 }

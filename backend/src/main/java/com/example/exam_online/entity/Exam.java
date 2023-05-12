@@ -20,7 +20,7 @@ public class Exam extends EntityAudit {
 //	private Questionnaire questionnaire;
 
     private String title;
-    @OneToMany(mappedBy = "exam", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "exam", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Collection<Questionnaire> questionnaires;

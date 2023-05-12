@@ -4,16 +4,16 @@ import * as roomService from '~/services/roomService';
 function Room() {
     const [dataRoom, setDataRoom] = useState();
     const {id} = useParams()
-    console.log(id.split('=')[1]);
+    const handleId = id.split('=')[1]
     
     useEffect(() => {
         const fetchApi = async () => {
-            const re = await roomService.findRoomByCode(id.split('=')[1]);
+            const re = await roomService.findRoomByCode(handleId);
             setDataRoom(re.data);
             console.log(re.data);
         };
         fetchApi();
-    }, []);
+    }, [handleId]);
     return (
         <div className="mx-auto max-w-[1200px]">
             <div className="mt-6 flex w-[1200px] max-w-full items-center justify-between rounded-lg border border-gray-400">

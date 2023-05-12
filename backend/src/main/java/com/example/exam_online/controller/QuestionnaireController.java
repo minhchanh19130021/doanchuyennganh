@@ -28,13 +28,13 @@ public class QuestionnaireController {
             @ApiResponse(responseCode = "404", description = "not found questions from code",
                     content = @Content(schema = @Schema(implementation = ResponseHandler.class)))
     })
-    @GetMapping("/getQuestionnaireByCode/{code}")
-    public ResponseHandler<List<Question>> getQuestionsByCode(@PathVariable long code) throws CustomException {
-        List<Question> result = questionnaireService.getQuestionsFromCode(code);
+    @GetMapping("/getQuestionnaireByExamId/{examId}")
+    public ResponseHandler<List<Question>> getQuestionsByExamId(@PathVariable long examId) throws CustomException {
+        List<Question> result = questionnaireService.getQuestionsFromExamId(examId);
         ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>(
                 "successfully get " +
                         "questions from" +
-                        " code",
+                        " exam id",
                 HttpStatus.OK.value(),
                 result);
         return responseHandler;
