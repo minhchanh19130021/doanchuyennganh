@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class HandleExamRequest {
     @JsonProperty("question_id")
     private Integer idQuestion;
-    @JsonProperty("answer")
-    private String answer;
+    @JsonProperty("answer_id")
+    private Long idAnswer;
     @JsonProperty("point_per_question")
     private double pointPerQuestion;
 
@@ -18,12 +18,12 @@ public class HandleExamRequest {
         this.idQuestion = idQuestion;
     }
 
-    public String getAnswer() {
-        return answer;
+    public Long getIdAnswer() {
+        return idAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setIdAnswer(Long idAnswer) {
+        this.idAnswer = idAnswer;
     }
 
     public double getPointPerQuestion() {

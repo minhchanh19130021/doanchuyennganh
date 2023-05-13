@@ -63,3 +63,12 @@ export const edit = async (tmp, title, examId) => {
         console.log(error?.response?.data); // delete when deploy
     }
 };
+
+export const submitExam = async (examRequests) => {
+    try {
+        const res = await request.post('/api/exam-handle', examRequests)
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data); // delete when deploy
+    }
+};
