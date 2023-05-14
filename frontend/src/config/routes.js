@@ -5,6 +5,7 @@ const routes = {
     createRoom: '/createRoom',
     room: '/room/:id',
     user: '/user',
-    roomList: '/roomList'
+    roomList: '/roomList',
+    exam: '/exam/:roomId',
 };
 export default routes;

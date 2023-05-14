@@ -1,12 +1,11 @@
 package com.example.exam_online.service;
 
-import com.example.exam_online.entity.AuditInfo;
-import com.example.exam_online.entity.Exam;
-import com.example.exam_online.entity.Question;
-import com.example.exam_online.entity.Questionnaire;
+import com.example.exam_online.entity.*;
 import com.example.exam_online.exception.CustomException;
+import com.example.exam_online.repository.AnswerRepository;
 import com.example.exam_online.repository.ExamRepository;
 import com.example.exam_online.repository.QuestionRepository;
+import com.example.exam_online.repository.ResultRepository;
 import com.example.exam_online.request.CreateExamRequest;
 import com.example.exam_online.request.EditExamRequest;
 import com.example.exam_online.request.HandleExamRequest;
@@ -28,6 +27,10 @@ public class ExamService {
     QuestionnaireService questionnaireService;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private AnswerRepository answerRepository;
+    @Autowired
+    private ResultRepository resultRepository;
 
     public void deleteExam(Exam exam) {
         examRepository.delete(exam);
@@ -90,9 +93,9 @@ public class ExamService {
         return questionnaires;
     }
 
-    public boolean handleExam(HandleExamRequest handleExamRequest) {
-        String answer = questionRepository.findAnswerById(handleExamRequest.getIdQuestion());
-        return answer != null && answer.equals(handleExamRequest.getAnswer());
+    public boolean handleExam(HandleExamRequest handleExamRequest) throws CustomException {
+        Answer answer = answerRepository.findById(handleExamRequest.getIdAnswer()).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "not found answer"));
+        return answer.isCorrect();
     }
 
     public void saveNewQuestionToExam(Exam exam, Question question, long userId) {
@@ -140,5 +143,13 @@ public class ExamService {
             questionnaireService.saveANewQuestionnaire(questionnaire);
             exam.getQuestionnaires().add(questionnaire);
         }
+    }
+
+    public void saveNewResult(int examId, int userId, double totalPoints) {
+        Result result = new Result();
+        result.setIdExam(examId);
+        result.setIdUser(userId);
+        result.setTotalScore(totalPoints);
+        resultRepository.save(result);
     }
 }

@@ -38,4 +38,11 @@ export const saveRoom = async (name, timeStart, timeEnd, status) => {
         return res.data;
     } catch (error) {}
 };
+export const findTimeByExamId = async (examId) => {
+    try {
+        const res = await request.get(`/room/getTime/${examId}`);
+        return res.data;
+    } catch (error) {}
+};
+
 

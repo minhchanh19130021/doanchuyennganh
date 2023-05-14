@@ -15,8 +15,9 @@ import com.example.exam_online.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -73,7 +74,7 @@ public class RoomController {
 	}
 	
 	@GetMapping("/getAllRoom")
-	public ResponseHandler<List<Room>> getRooms () {
+	public ResponseHandler<List<Room>> getRooms() {
 		ResponseHandler<List<Room>> responseHandler;
 		try {
 			List<Room> rooms = roomService.getAllRooms();
