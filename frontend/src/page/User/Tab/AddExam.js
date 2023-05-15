@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import * as examService from '~/services/examService';
 function AddExam() {
     const [showModal, setShowModal] = useState(false);
+    const user = JSON.parse(localStorage.getItem('dbUser'));
     const formik = useFormik({
         initialValues: {
             title: '',
@@ -19,7 +20,7 @@ function AddExam() {
         }),
         onSubmit: async (values) => {
             await examService
-                .addExam(values.title, 1, values.numberQuestion)
+                .addExam(values.title, user?.idUser, values.numberQuestion)
                 .then((re) => {
                     if (re !== null && re !== undefined) {
                         values.title ="";

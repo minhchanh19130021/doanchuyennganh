@@ -5,11 +5,12 @@ import * as Yup from 'yup';
 import * as examService from '~/services/examService';
 import * as roomService from '~/services/roomService';
 import * as questionService from '~/services/questionService';
+import { useNavigate } from 'react-router-dom';
 function CreateRoom() {
     // const [dataRoom, setDataRoom] = useState();
 
-    // const navigate = useNavigate();
-
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('dbUser'));
     const buttonRef = useRef();
     const [examList, setExamList] = useState([]);
     const [examDetail, setExamDetail] = useState([]);
@@ -29,7 +30,7 @@ function CreateRoom() {
 
     useEffect(() => {
         const fetchExam = async () => {
-            const re = await examService.findExamByUserId(1);
+            const re = await examService.findExamByUserId(user?.idUser);
             setExamList(re?.data);
         };
         fetchExam();
@@ -65,15 +66,15 @@ function CreateRoom() {
         onSubmit: async (values) => {
             handleDate(new Date(values.startTime));
             await roomService
-                .saveRoom(values.name, handleDate(new Date(values.startTime)), values.endTime, values.status)
+                .saveRoom(values.name, user?.idUser,handleDate(new Date(values.startTime)), values.endTime, values.status)
                 .then((response) => {
                     if (response !== null) {
                         notifySuccess('Tạo phòng thành công');
                         buttonRef.current.setAttribute('disabled', true);
                         console.log(response);
-                        // setTimeout(() => {
-                        //     navigate(`/room/id=${response.data.id}`);
-                        // }, 3000);
+                        setTimeout(() => {
+                            navigate(`/room/id=${response?.data?.roomId}`);
+                        }, 3000);
                     } else {
                         notifyWarning('Tạo phòng thất bại');
                     }
@@ -153,7 +154,7 @@ function CreateRoom() {
                 {isOpen && (
                     <>
                         <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50">
-                            <div className="relative top-1/2 mx-auto w-full max-w-screen max-h-screen -translate-y-1/2 transform rounded-lg bg-white p-6 shadow-lg">
+                            <div className="max-w-screen relative top-1/2 mx-auto max-h-screen w-full -translate-y-1/2 transform rounded-lg bg-white p-6 shadow-lg">
                                 <button
                                     onClick={() => setIsOpen(false)}
                                     className="absolute right-0 top-0 my-2 mr-2 rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
@@ -163,7 +164,7 @@ function CreateRoom() {
 
                                 <div className="mt-5">
                                     <div className="flex items-center px-4 py-8">
-                                        <div className="relative mx-auto  w-full ove rounded-md bg-white p-4 shadow-lg">
+                                        <div className="ove relative  mx-auto w-full rounded-md bg-white p-4 shadow-lg">
                                             <table className=" text-left text-sm text-gray-500 dark:text-gray-400">
                                                 <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
                                                     <tr className="grid grid-cols-8">
@@ -192,41 +193,43 @@ function CreateRoom() {
                                                     </tr>
                                                 </thead>
                                                 <tbody className="h-[100px] overflow-hidden">
-                                                    {examDetail?.sort((a,b)=>a.id-b.id)?.map((e) => {
-                                                        const isTrue = e?.answers?.find((a) => a?.correct === true);
-                                                        console.log(isTrue);
-                                                        return (
-                                                            <tr
-                                                                key={e?.id}
-                                                                className="grid grid-cols-8 border-b bg-white dark:border-gray-700 dark:bg-gray-900"
-                                                            >
-                                                                <th
-                                                                    scope="row"
-                                                                    className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                                                    {examDetail
+                                                        ?.sort((a, b) => a.id - b.id)
+                                                        ?.map((e) => {
+                                                            const isTrue = e?.answers?.find((a) => a?.correct === true);
+                                                            console.log(isTrue);
+                                                            return (
+                                                                <tr
+                                                                    key={e?.id}
+                                                                    className="grid grid-cols-8 border-b bg-white dark:border-gray-700 dark:bg-gray-900"
                                                                 >
-                                                                    {e?.id}
-                                                                </th>
-                                                                <td className="col-span-2 px-6 py-4">
-                                                                    <p>{e?.content}</p>
-                                                                </td>
-                                                                <td className="px-6 py-4">
-                                                                    <p>{e?.answers[0]?.content}</p>
-                                                                </td>
-                                                                <td className="px-6 py-4">
-                                                                    <p>{e?.answers[1]?.content}</p>
-                                                                </td>
-                                                                <td className="px-6 py-4">
-                                                                    <p>{e?.answers[2]?.content}</p>
-                                                                </td>
-                                                                <td className="px-6 py-4">
-                                                                    <p>{e?.answers[3]?.content}</p>
-                                                                </td>
-                                                                <td className="px-6 py-4">
-                                                                    <p>{isTrue?.content}</p>
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    })}
+                                                                    <th
+                                                                        scope="row"
+                                                                        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                                                                    >
+                                                                        {e?.id}
+                                                                    </th>
+                                                                    <td className="col-span-2 px-6 py-4">
+                                                                        <p>{e?.content}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4">
+                                                                        <p>{e?.answers[0]?.content}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4">
+                                                                        <p>{e?.answers[1]?.content}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4">
+                                                                        <p>{e?.answers[2]?.content}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4">
+                                                                        <p>{e?.answers[3]?.content}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4">
+                                                                        <p>{isTrue?.content}</p>
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        })}
                                                 </tbody>
                                             </table>
                                             {/* <button

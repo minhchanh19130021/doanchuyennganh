@@ -1,34 +1,7 @@
 import { ToastContainer } from 'react-toastify';
 function InfoUpdate() {
+    const user = JSON.parse(localStorage.getItem('dbUser'));
 
-    // const formik = useFormik({
-    //     initialValues: {
-    //         email:'',
-    //         name: '',
-    //         phone: '',
-    //         birthday: '',
-    //     },
-    //     validationSchema: Yup.object({
-    //         name: Yup.string().required('Thông tin bắt buộc').min(4, 'Tên quá ngắn').max(16, 'Tên quá dài'),
-    //         phone: Yup.string().required('Thông tin bắt buộc'),
-    //         birthday: Yup.string(),
-    //     }),
-    //     onSubmit: (values) => {
-           
-    //     },
-    // });
-    // const notifySuccess = (msg) => {
-    //     toast.success(msg, {
-    //         position: 'top-right',
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: 'light',
-    //     });
-    // };
 
     return (
         <div className="-mt-10 flex flex-col items-center justify-center ">
@@ -46,8 +19,8 @@ function InfoUpdate() {
                     />
                 </svg>
             </div>
-            <p className="mt-3 text-xl font-bold text-[#072d94]">leminhchanh</p>
-            <p className="mt-1 text-base text-[#334155]">123123</p>
+            <p className="mt-3 text-xl font-bold text-[#072d94]">{user?.username}</p>
+            <p className="mt-1 text-base text-[#334155]">{user?.email}</p>
             <button
                 className="mt-1 flex items-center rounded-xl border border-[#d8e0e8] bg-transparent px-4 py-1 leading-6 text-[#52637a] hover:bg-[#718198] hover:text-[#fff]"
                 onClick={() => {

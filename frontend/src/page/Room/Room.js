@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 import * as roomService from '~/services/roomService';
 function Room() {
     const [dataRoom, setDataRoom] = useState();
-    const {id} = useParams()
-    const handleId = id.split('=')[1]
-    
+    const { id } = useParams();
+    const handleId = id.split('=')[1];
+
     useEffect(() => {
         const fetchApi = async () => {
-            const re = await roomService.findRoomByCode(handleId);
-            setDataRoom(re.data);
-            console.log(re.data);
+            const re = await roomService.findRoomByRoomId(handleId);
+            setDataRoom(re?.data);
+            console.log(re);
         };
         fetchApi();
     }, [handleId]);
@@ -18,11 +18,7 @@ function Room() {
         <div className="mx-auto max-w-[1200px]">
             <div className="mt-6 flex w-[1200px] max-w-full items-center justify-between rounded-lg border border-gray-400">
                 <div title="Woman holding a mug ">
-                    <img
-                        src="https://www.questpond.com/img/2.png"
-                        alt=""
-                        className="h-[300px]"
-                    />
+                    <img src="https://www.questpond.com/img/2.png" alt="" className="h-[300px]" />
                 </div>
                 <div className="flex flex-col justify-between rounded-b   p-4 leading-normal  ">
                     <div className="mb-8">
@@ -34,18 +30,11 @@ function Room() {
                             >
                                 <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
                             </svg>
-                            Trạng thái phòng: {dataRoom?.status
-}
+                            Trạng thái phòng: {dataRoom?.status}
                         </p>
-                        <div className="mb-2 text-xl font-bold text-gray-900">
-                            Tên phòng: {dataRoom?.name}
-                        </div>
-                        <p className="text-base text-gray-700">
-                            Thời gian bắt đầu làm bài: {dataRoom?.startAt}
-                        </p>
-                        <p className="text-base text-gray-700">
-                            Thời gian thu bài: {dataRoom?.seconds}
-                        </p>
+                        <div className="mb-2 text-xl font-bold text-gray-900">Tên phòng: {dataRoom?.name}</div>
+                        <p className="text-base text-gray-700">Thời gian bắt đầu làm bài: {dataRoom?.startAt}</p>
+                        <p className="text-base text-gray-700">Thời gian thu bài: {dataRoom?.seconds}</p>
                         <div className="mt-6 flex items-center">
                             <img
                                 className="mr-4 h-10 w-10 rounded-full"
@@ -54,15 +43,10 @@ function Room() {
                             />
                             <div className="text-sm">
                                 <p className="mb-2 leading-none text-gray-900">
-                                    Chủ phòng: {dataRoom?.auditInfo?.createUserId
-}
+                                    Mã chủ phòng: {dataRoom?.auditInfo?.changeUserId}
                                 </p>
-                                <p className="mb-2 text-gray-600">
-                                    Mã phòng: {dataRoom?.id}
-                                </p>
-                                <p className="mb-2 text-gray-600">
-                                    Mã tham gia: {dataRoom?.code}
-                                </p>
+                                <p className="mb-2 text-gray-600">Mã phòng: {dataRoom?.id}</p>
+                                <p className="mb-2 text-gray-600">Mã tham gia: {dataRoom?.code}</p>
                             </div>
                         </div>
                     </div>

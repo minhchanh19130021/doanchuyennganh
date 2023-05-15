@@ -42,16 +42,16 @@ public class UserController {
     private JwtTokenProvider tokenProvider;
 
     @GetMapping("/findUser/{userId}")
-    public ResponseHandler<UserDto> findUserById(@PathVariable Long userId) throws CustomException {
+    public ResponseHandler<User> findUserById(@PathVariable Long userId) throws CustomException {
         User user = userService.findById(userId);
         UserDto userDto = mapper.map(user, UserDto.class);
-        ResponseHandler<UserDto> responseHandler = new ResponseHandler<UserDto>("successfully found user",
-                                                                                HttpStatus.OK.value(), userDto);
+        ResponseHandler<User> responseHandler = new ResponseHandler<User>("successfully found user",
+                                                                                HttpStatus.OK.value(), user);
         return responseHandler;
     }
 
     @PostMapping("/login")
-    public ResponseHandler<String> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseHandler authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Valid username and password.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -66,7 +66,7 @@ public class UserController {
 
         // Return jwt for user.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new ResponseHandler<>("successfully logged in", HttpStatus.OK.value(), jwt);
+        return new ResponseHandler("successfully logged in", HttpStatus.OK.value(), authentication.getPrincipal());
     }
 
     @PostMapping("/register")
