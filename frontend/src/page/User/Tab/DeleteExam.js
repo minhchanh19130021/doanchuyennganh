@@ -5,9 +5,10 @@ function DeleteExam() {
     const [showModal, setShowModal] = useState(false);
     const [examList, setExamList] = useState([]);
     const [examId, setExamId] = useState();
+    const user = JSON.parse(localStorage.getItem('dbUser'));
     useEffect(() => {
         const fetchExam = async () => {
-            const re = await examService.findExamByUserId(1);
+            const re = await examService.findExamByUserId(user?.idUser);
             setExamList(re?.data);
         };
         fetchExam();

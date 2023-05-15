@@ -6,7 +6,7 @@ function FullExam() {
     const [showModal, setShowModal] = useState(false);
     const [examList, setExamList] = useState([]);
     const [examDetail, setExamDetail] = useState([]);
-
+    const user = JSON.parse(localStorage.getItem('dbUser'));
     // useEffect(() => {
     //     const fetchApi = async () => {
     //         const re = await questionService.findQuestionByUserAndCode(1, 1);
@@ -17,7 +17,7 @@ function FullExam() {
 
     useEffect(() => {
         const fetchExam = async () => {
-            const re = await examService.findExamByUserId(1);
+            const re = await examService.findExamByUserId(user?.idUser);
             setExamList(re?.data);
         };
         fetchExam();

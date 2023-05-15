@@ -1,54 +1,44 @@
+import { useEffect, useState } from 'react';
+import * as userService from '~/services/userService';
 
 function PasswordUser() {
-    // const [oldpwdShow, setOldPwdShow] = useState(false);
-    // const [newPwdShow, setNewPwdShow] = useState(false);
-    // const [confirmPwdShow, setConfirmPwdShow] = useState(false);
-    // const navigate = useNavigate();
-    // const formik = useFormik({
-    //     initialValues: {
-    //         email:'',
-    //         opwd: '',
-    //         pwd: '',
-    //         cpwd: '',
-    //     },
-    //     validationSchema: Yup.object({
-    //         opwd: Yup.string().required('Thông tin bắt buộc'),
-    //         pwd: Yup.string().required('Thông tin bắt buộc'),
-    //         cpwd: Yup.string()
-    //             .required('Thông tin bắt buộc')
-    //             .oneOf([Yup.ref('pwd')], 'Xác nhận mật khẩu không đúng.'),
-    //     }),
-    //     onSubmit: (values) => {
-           
-    //     },
-    // });
-    // const notifySuccess = (msg) => {
-    //     toast.success(msg, {
-    //         position: 'top-right',
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: 'light',
-    //     });
-    // };
-    // const notifyWarning = (msg) => {
-    //     toast.warn(msg, {
-    //         position: 'top-right',
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: 'light',
-    //     });
-    // };
+    const [userInfo, setUserInfo] = useState([]);
+    const user = JSON.parse(localStorage.getItem('dbUser'));
+    useEffect(() => {
+        const fetchApi = async () => {
+            const re = await userService.findUserById(user?.idUser);
+            setUserInfo(re?.data);
+        };
+        fetchApi();
+    }, []);
     return (
-        <div>form </div>
-        
+        <form>
+            <div>
+                <div>
+                    <p>Tên tài khoản</p>
+                    <input
+                        type="text"
+                        id="disabled-input"
+                        aria-label="disabled input"
+                        className="mb-6 block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        defaultValue={userInfo?.username}
+                        disabled
+                    />
+                </div>
+                <div>
+                    <p>Địa chỉ email</p>
+                    <input
+                        type="text"
+                        id="disabled-input"
+                        aria-label="disabled input"
+                        className="mb-6 block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        defaultValue={userInfo?.email}
+                        disabled
+                    />
+                </div>
+               
+            </div>
+        </form>
     );
 }
 

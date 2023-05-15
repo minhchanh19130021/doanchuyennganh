@@ -4,7 +4,7 @@ const routes = {
     signUp: '/signUp',
     createRoom: '/createRoom',
     room: '/room/:id',
-    user: '/user',
+    user: '/user/:uid',
     roomList: '/roomList',
     exam: '/exam/:roomId',
 };

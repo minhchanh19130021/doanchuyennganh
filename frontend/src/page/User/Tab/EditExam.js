@@ -14,10 +14,10 @@ function EditExam() {
     const [questionIdsToSubmit, setQuestionIdsToSubmit] = useState([]);
     const [examId, setExamId] = useState();
     const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
-
+    const user = JSON.parse(localStorage.getItem('dbUser'));
     useEffect(() => {
         const fetchExam = async () => {
-            const re = await examService.findExamByUserId(1);
+            const re = await examService.findExamByUserId(user?.idUser);
             setExamList(re?.data);
         };
         fetchExam();

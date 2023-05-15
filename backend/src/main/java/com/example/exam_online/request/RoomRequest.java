@@ -18,7 +18,10 @@ public class RoomRequest {
 	
 	@JsonProperty("room_name")
 	private String roomName;
-	
+
+	@JsonProperty("create_user_id")
+	private Long userId;
+
 	@JsonProperty("start_at")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime startAt;

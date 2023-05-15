@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import InfoUpdate from './InfoUpdate';
-import PasswordUser from './PasswordUser';
 import Tab from './Tab';
+import PasswordUser from './PasswordUser/PasswordUser';
 
 function User() {
     const [toggleState, setToggleState] = useState(1);
-
+    
     const toggleTab = (index) => {
         setToggleState(index);
     };
@@ -79,7 +79,7 @@ function User() {
                                 </svg>
 
                                 <p className="text-[#334155]">
-                                   Tab 2
+                                   Thông tin cá nhân
                                 </p>
                             </div>
                             <div
@@ -128,7 +128,7 @@ function User() {
                    
                     <div
                         className={
-                            toggleState === 3
+                            toggleState === 2
                                 ? 'block pb-10 pt-8 lg:col-span-3 xl:col-span-3 2xl:col-span-3'
                                 : 'hidden'
                         }
