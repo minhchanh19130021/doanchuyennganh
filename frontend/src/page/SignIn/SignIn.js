@@ -7,13 +7,22 @@ function SignIn() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         axios
             .post('http://localhost:8080/api/auth/login', { username, password })
             .then((response) => {
-                console.log(response?.data?.data?.user);
-                localStorage.setItem('dbUser', JSON.stringify(response?.data?.data?.user));
+                console.log(response?.data?.data);
+                let date = new Date();
+                date.setTime(date.getTime()+(24*60*60*1000));
+                localStorage.setItem('dbUser', JSON.stringify({
+                    idUser: response?.data?.data?.id,
+                    email: response?.data?.data?.email,
+                    username: response?.data?.data?.name
+                }));
+                document.cookie = "jwt" + " = " + response?.data?.data?.jwt + "; expires = " +date.toGMTString();
+                // localStorage.setItem('dbUser', JSON.stringify(response?.data?.data?.user));
                 navigate('/');
             })
             .catch((error) => {

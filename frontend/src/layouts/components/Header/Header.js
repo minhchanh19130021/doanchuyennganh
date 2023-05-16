@@ -1,7 +1,10 @@
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
-    const user = JSON.parse(localStorage.getItem('dbUser'));
+    const user = localStorage.getItem('dbUser') !== 'undefined' ? JSON.parse(localStorage.getItem('dbUser')) : null;
+    const navigate = useNavigate();
+
     return (
         <div className="padding-responsive flex w-full items-center justify-between">
             <NavLink to="/">
@@ -78,6 +81,8 @@ function Header() {
                         <button className="mx-1 font-bold text-[#71869d] hover:text-[#35509a]"
                         onClick={()=>{
                             localStorage.removeItem("dbUser")
+                            document.cookie = ' jwt =; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            navigate('/')
                         }}
                         >
                             Đăng xuất</button>

@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from 'yup';
 import * as examService from '~/services/examService';
+import { useNavigate } from 'react-router-dom';
+
 function AddExam() {
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const user = JSON.parse(localStorage.getItem('dbUser'));
     const formik = useFormik({
@@ -22,13 +25,17 @@ function AddExam() {
             await examService
                 .addExam(values.title, user?.idUser, values.numberQuestion)
                 .then((re) => {
+                    console.log(re);
                     if (re !== null && re !== undefined) {
                         values.title ="";
                         values.numberQuestion =""
                         notifySuccess('Tạo đề thành công');
+                        navigate(0);
                     } else {
                         notifyWarning('Tạo đề thất bại. Do số lượng câu hỏi vượt quá mức so với ngân hàng câu hỏi');
                     }
+                }, (err) => {
+                    console.log(err);
                 });
         },
     });

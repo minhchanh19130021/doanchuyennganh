@@ -8,6 +8,7 @@ function Room() {
 
     useEffect(() => {
         const fetchApi = async () => {
+            console.log(id);
             const re = await roomService.findRoomByRoomId(handleId);
             setDataRoom(re?.data);
             console.log(re);

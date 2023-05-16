@@ -3,11 +3,15 @@ import { useEffect, useState } from 'react';
 import * as roomService from '~/services/roomService';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 function RoomList() {
     const [stateJoin, setStateJoin] = useState();
     const [idRoom, setIdRoom] = useState('');
     const [codeJoin, setCodeJoin] = useState('');
     const [roomList, setRoomList] = useState([]);
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchApi = async () => {
             const response = await roomService.getRooms();
@@ -123,10 +127,11 @@ function RoomList() {
                                                         .addUserToRoom(idRoom, codeJoin)
                                                         .then((result) => {
                                                             if (result?.status === 400) {
-                                                                notifyWarning("Vào phòng thất bại");
+                                                                notifyWarning('Vào phòng thất bại');
                                                             }
                                                             if (result?.status === 200) {
-                                                                notifySuccess('Vào phòng thành công');
+                                                                // notifySuccess('Vào phòng thành công');
+                                                                navigate(`/exam/${room?.data?.id}`);
                                                             }
                                                         })
                                                         .catch((error) => {

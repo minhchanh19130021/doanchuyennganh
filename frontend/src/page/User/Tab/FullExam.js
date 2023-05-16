@@ -66,7 +66,6 @@ function FullExam() {
                                                 ?.sort((a, b) => a.id - b.id)
                                                 ?.map((e) => {
                                                     const isTrue = e?.answers?.find((a) => a?.correct === true);
-                                                    console.log(e?.answers);
                                                     return (
                                                         <tr
                                                             key={e?.id}
