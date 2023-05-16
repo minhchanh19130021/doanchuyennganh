@@ -5,18 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class ExportScoreRequest {
-    @JsonProperty("user_ids")
-    private List<Long> userIds;
+    @JsonProperty("room_id")
+    private Long roomId;
 
     @JsonProperty("exam_id")
     private Long examId;
 
-    public List<Long> getUserIds() {
-        return userIds;
+    public Long getRoomId() {
+        return roomId;
     }
 
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 
     public Long getExamId() {

@@ -123,4 +123,8 @@ public class UserService implements UserDetailsService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public List<Long> getUserIds(Long roomId) {
+        return userRepository.getUserIds(roomId);
+    }
 }

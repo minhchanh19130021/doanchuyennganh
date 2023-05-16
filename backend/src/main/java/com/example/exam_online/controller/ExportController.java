@@ -35,7 +35,8 @@ public class ExportController {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-        List<User> users = userService.findUserByIds(exportScoreRequest.getUserIds());
+        List<Long> userIds = userService.getUserIds(exportScoreRequest.getRoomId());
+        List<User> users = userService.findUserByIds(userIds);
         Exam exam = examService.findById(exportScoreRequest.getExamId());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=score_" + currentDateTime + ".pdf";
