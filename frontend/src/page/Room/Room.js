@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import * as roomService from '~/services/roomService';
+import * as exportService from '~/services/exportService';
+import axios from "axios";
 function Room() {
     const [dataRoom, setDataRoom] = useState();
     const { id } = useParams();
@@ -83,7 +85,20 @@ function Room() {
                 </tbody>
             </table> */}
             <div className="flex justify-end">
-                <button className="mx-2 mt-6 rounded border-b-4 border-blue-700 bg-blue-500 px-4 py-2 font-bold text-white hover:border-blue-500 hover:bg-blue-400">
+                <button className="mx-2 mt-6 rounded border-b-4 border-blue-700 bg-blue-500 px-4 py-2 font-bold text-white hover:border-blue-500 hover:bg-blue-400"
+                        onClick={async () => {
+                                 await exportService
+                                .exportToPDF(dataRoom?.id, dataRoom?.exam?.id)
+                                .then((response) => {
+
+                                            })
+                                            .catch((error) => {
+                                                console.log(error);
+                                            });
+
+
+                        }}
+                 >
                     Xuất bảng điểm (pdf)
                 </button>
                 <button className=" hover:bg-blue-red mt-6 rounded border-b-4 border-red-700 bg-red-500 px-4 py-2 font-bold text-white hover:border-red-500">
