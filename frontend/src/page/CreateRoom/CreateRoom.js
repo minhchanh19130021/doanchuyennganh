@@ -71,7 +71,6 @@ function CreateRoom() {
                     if (response !== null) {
                         notifySuccess('Tạo phòng thành công');
                         buttonRef.current.setAttribute('disabled', true);
-                        console.log(response);
                         setTimeout(() => {
                             navigate(`/room/id=${response?.data?.roomId}`);
                         }, 3000);

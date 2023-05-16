@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import * as examService from '~/services/examService';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 function DeleteExam() {
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [examList, setExamList] = useState([]);
     const [examId, setExamId] = useState();
@@ -72,8 +75,9 @@ function DeleteExam() {
                                                 await examService.deleteExam(examId).then((res)=>{
                                                     console.log(res)
                                                     if(res.status === 200){
-                                                        notifySuccess("Xóa thành công")
+                                                        // notifySuccess("Xóa thành công")
                                                         setShowModal(false)
+                                                        navigate(0);
                                                     }else{
                                                         notifyWarning("Xóa thất bại")
                                                     }

@@ -3,6 +3,8 @@ import QuestionInEditExam from '~/layouts/components/QuestionInEdit/QuestionInEd
 import * as examService from '~/services/examService';
 import { getAllQuestions } from '~/services/questionService';
 import * as questionnaireService from '~/services/questionnaireService';
+import { ToastContainer, toast } from 'react-toastify';
+
 function EditExam() {
     const [showModal, setShowModal] = useState(false);
     const [examList, setExamList] = useState([]);
@@ -22,6 +24,19 @@ function EditExam() {
         };
         fetchExam();
     }, []);
+
+    const notifySuccess = (msg) => {
+        toast.success(msg, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
+    };
 
     function showAllQuestions() {
         getAllQuestions().then(
@@ -59,9 +74,10 @@ function EditExam() {
             setShowAddQuestionModal(false);
             setQuestionIdsToSubmit(e?.data?.map(q => q?.id))
             setDeleteQuestions([]);
-            setAddQuestions([]);          
+            setAddQuestions([]);        
+            notifySuccess('Thay đổi đề thi thành công');  
         }, () => {
-            alert("lỗi")
+            notifySuccess('Thay đổi đề thi thất bại');  
         })
     }
 
@@ -203,6 +219,7 @@ function EditExam() {
                                         Thêm câu hỏi
                                     </button>
                                     <button 
+                                        type='button'
                                         className="float-right mb-2 mr-2 mt-6 rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
                                         onClick={()=>{
                                             handleSubmit()

@@ -1,6 +1,7 @@
 package com.example.exam_online.controller;
 
 import com.example.exam_online.dto.CustomUserDetails;
+import com.example.exam_online.dto.ResponseLogin;
 import com.example.exam_online.dto.UserDto;
 import com.example.exam_online.entity.User;
 import com.example.exam_online.exception.CustomException;
@@ -66,7 +67,13 @@ public class UserController {
 
         // Return jwt for user.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new ResponseHandler("successfully logged in", HttpStatus.OK.value(), authentication.getPrincipal());
+        ResponseLogin responseLogin = new ResponseLogin();
+        responseLogin.setId(((CustomUserDetails) authentication.getPrincipal()).getUser().getIdUser());
+        responseLogin.setEmail(((CustomUserDetails) authentication.getPrincipal()).getUser().getEmail());
+        responseLogin.setName(((CustomUserDetails) authentication.getPrincipal()).getUser().getUsername());
+        responseLogin.setRole(((CustomUserDetails) authentication.getPrincipal()).getUser().getRole());
+        responseLogin.setJwt(jwt);
+        return new ResponseHandler("successfully logged in", HttpStatus.OK.value(), responseLogin);
     }
 
     @PostMapping("/register")
