@@ -1,16 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
 import { findQuestionsByExamId } from '~/services/questionnaireService';
 import { findExamById, submitExam } from '~/services/examService';
-import { useParams } from 'react-router-dom';
 import { findRoomByRoomId, findTimeByExamId } from '~/services/roomService';
+import Modal from 'react-modal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function Exam() {
+    let navigate =  useNavigate();
     const [questions, setQuestions] = useState([]);
     const [time, setTime] = useState(0);
     const [paused, setPaused] = useState(false);
     const [point, setPoint] = useState(0);
     const [requestParams, setRequestParams] = useState({});
     const [ examId, setExamId ] = useState(undefined);
+    const [isOpen, setIsOpen] = useState(false);
+    const [result, setResult] = useState({});
+
+    const handleOpenModal = () => {
+        setIsOpen(true);
+      };
+    
+      const handleCloseModal = () => {
+        const roomId = window.location.href.substring(window.location.href.length-1);
+      
+        axios.put('http://localhost:8080/room/'+roomId+'/leave',{userId:124})
+        .then(response => {
+          console.log(response.data);
+          setIsOpen(false);
+          navigate("/");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+       
+      };
 
     useEffect(() => {
         const roomId = window.location.href.substring(window.location.href.length-1);
@@ -68,18 +93,25 @@ function Exam() {
         }
         submitExam(saveResultRequest).then(e => {
             console.log(e?.data);
-            alert(JSON.stringify(e?.data))
+            setResult(e?.data);
+            // alert(JSON.stringify(e?.data))
+            handleOpenModal();
         })
     };
 
 
     return (
-        <div className="relative w-9/10 mx-auto flex">         
-            <div className="w-1/4">
-                <label className="text-xl font-bold text-blue-500">Thời gian làm bài:</label>
-                <br></br>
-                <p>{formatTime(time)}</p>
-                {/* <label className="text-xl font-bold text-red-500">{formatTime(time)}</label> */}
+         <div>
+            <div className="mt-10 text-2xl font-bold flex  justify-center">
+                <p >Bài làm</p>
+            </div>
+        <div className="relative w-9/10 mx-auto flex d">     
+       
+            <div className="w-1/4 flex justify-center ml-10 ">
+                <label className="text-xl font-bold text-blue-500 w-full">Thời gian làm bài:</label>
+                
+                <label className="w-full">{formatTime(time)}</label>
+              
             </div>
             <div className="w-3/4">
                 <form onSubmit={(e) => 
@@ -129,7 +161,17 @@ function Exam() {
                         Nộp bài
                     </button>
                 </form>
-            </div>
+            </div></div>    
+
+            <Modal isOpen={isOpen} onRequestClose={handleCloseModal} className="bg-white flex flex-col items-center h-full justify-center">
+            <p class="text-green-500 text-xl font-bold">Nộp bài thành công!</p>
+            <p>Số câu hỏi: {result.totalQuestion}</p>
+            <p>Số câu trả lời đúng: {result.rightAnswer}</p>
+            <p>Số điểm: {result.totalPoints}</p>
+       
+                <button className="mt-20 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700" onClick={handleCloseModal}>Rời phòng</button>
+            </Modal>
+
         </div>
     );
 }
