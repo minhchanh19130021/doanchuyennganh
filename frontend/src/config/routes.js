@@ -7,5 +7,6 @@ const routes = {
     user: '/user/:uid',
     roomList: '/roomList',
     exam: '/exam/:roomId',
+
 };
 export default routes;
