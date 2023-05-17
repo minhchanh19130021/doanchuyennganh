@@ -6,7 +6,6 @@ import withReactContent from 'sweetalert2-react-content'
 
 
 export const register = async(user)=>{
-        console.log(user);
         const MySwal = withReactContent(Swal)
         const res = await request.post("/api/auth/register", {
             username : user.username,
