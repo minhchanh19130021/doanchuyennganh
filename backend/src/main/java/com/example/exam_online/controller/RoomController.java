@@ -11,6 +11,7 @@ import com.example.exam_online.request.LeaveRoomRequest;
 import com.example.exam_online.request.RoomExamReqest;
 import com.example.exam_online.request.RoomRequest;
 import com.example.exam_online.response.ResponseHandler;
+import com.example.exam_online.service.ExamService;
 import com.example.exam_online.service.IRoomService;
 import com.example.exam_online.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,8 @@ public class RoomController {
     private UserService userService;
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private ExamService examService;
 
     @PutMapping("/{roomId}/leave")
     public ResponseHandler<String> leaveRoom(@PathVariable Long roomId, @RequestBody LeaveRoomRequest request) throws CustomException {
@@ -102,6 +105,7 @@ public class RoomController {
         room.setStartAt(roomRequest.getStartAt());
         room.setStatus(roomRequest.getStatus());
         room.setAuditInfo(auditInfo);
+        room.setExam(examService.findById(roomRequest.getExamId()));
         Room result = roomService.createEntityAudit(room);
         ResponseHandler<RoomDto> responseHandler = new ResponseHandler<RoomDto>(
                 "successfully add a room",

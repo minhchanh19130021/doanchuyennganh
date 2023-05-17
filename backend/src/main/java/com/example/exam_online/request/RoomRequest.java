@@ -15,7 +15,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomRequest {
-	
+
+	@JsonProperty("exam_id")
+	private Long examId;
+
 	@JsonProperty("room_name")
 	private String roomName;
 

@@ -63,10 +63,10 @@ function CreateRoom() {
                 .required('Thông tin bắt buộc')
                 .matches(/^[1-9]\d*$/, 'Mã đề phải là số'),
         }),
-        onSubmit: async (values) => {
+        onSubmit: async (values) => {          
             handleDate(new Date(values.startTime));
             await roomService
-                .saveRoom(values.name, user?.idUser,handleDate(new Date(values.startTime)), values.endTime, values.status)
+                .saveRoom(values.code, values.name, user?.idUser,handleDate(new Date(values.startTime)), values.endTime, values.status)
                 .then((response) => {
                     if (response !== null) {
                         notifySuccess('Tạo phòng thành công');

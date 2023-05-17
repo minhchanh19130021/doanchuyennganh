@@ -42,12 +42,12 @@ function Exam() {
     };
 
     useEffect(() => {
-        const roomId = window.location.href.substring(window.location.href.length - 1);
+        const roomId = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
         findRoomByRoomId(roomId).then((e) => {
             setExamId(e?.data?.exam?.id);
             const seconds = e?.data?.seconds;
             setTime(seconds);
-            findQuestionsByExamId(1).then(
+            findQuestionsByExamId(e?.data?.exam?.id ? e?.data?.exam?.id : 1).then(
                 (e) => {
                     setQuestions(e?.data);
                     setPoint(10 / e?.data?.length);
@@ -133,7 +133,7 @@ function Exam() {
                     >
                         <div>
                             {questions
-                                .sort((a, b) => a.id - b.id)
+                                ?.sort((a, b) => a.id - b.id)
                                 ?.map(
                                     (question, i) => (
                                         <div className="mt-4" key={i}>

@@ -44,9 +44,10 @@ export const findRoomByRoomId = async (roomId) => {
         return res.data;
     } catch (error) {}
 };
-export const saveRoom = async (name,create_user_id, timeStart, timeEnd, status) => {
+export const saveRoom = async (examId, name,create_user_id, timeStart, timeEnd, status) => {
     try {
         const res = await request.post(`/room/addARoom`, {
+            exam_id: examId,
             room_name: name,
             create_user_id:create_user_id,
             start_at: timeStart,
