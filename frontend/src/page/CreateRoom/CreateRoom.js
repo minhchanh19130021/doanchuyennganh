@@ -66,7 +66,7 @@ function CreateRoom() {
         onSubmit: async (values) => {          
             handleDate(new Date(values.startTime));
             await roomService
-                .saveRoom(values.code, values.name, user?.idUser,handleDate(new Date(values.startTime)), values.endTime, values.status)
+                .saveRoom(values.code, values.name, user?.idUser, handleDate(new Date(values.startTime)), values.endTime, values.status)
                 .then((response) => {
                     if (response !== null) {
                         notifySuccess('Tạo phòng thành công');

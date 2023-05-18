@@ -147,8 +147,7 @@ public class RoomController {
 
     @PostMapping("/addUserToRoom")
     public ResponseHandler<RoomExamUser> addUserToRoom(@RequestBody RoomExamReqest roomExamReqest) throws CustomException {
-//		User user = SecurityHelper.currentUser();
-        User user = userService.findById(1L);
+        User user = SecurityHelper.currentUser();
         ResponseHandler responseHandler;
         Room room;
         try {
@@ -157,9 +156,12 @@ public class RoomController {
                 return new ResponseHandler<>("Room code invalid: ",
                                              HttpStatus.BAD_REQUEST.value(), null);
             }
-            RoomExamUser roomExamUser = new RoomExamUser();
-            roomExamUser.setUser(user);
-            roomExamUser.setRoom(room);
+            if (!examService.isUserAllowedEnterRoom(user.getIdUser(), roomExamReqest.getRoomId())) {
+                RoomExamUser roomExamUser = new RoomExamUser();
+                roomExamUser.setUser(user);
+                roomExamUser.setRoom(room);
+                examService.saveRoomExamUser(roomExamUser);
+            }
             responseHandler = new ResponseHandler<>("Add User to Room success",
                                                     HttpStatus.OK.value(), null);
         } catch (Exception ex) {

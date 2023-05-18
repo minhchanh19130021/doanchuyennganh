@@ -2,16 +2,15 @@ package com.example.exam_online.service;
 
 import com.example.exam_online.entity.*;
 import com.example.exam_online.exception.CustomException;
-import com.example.exam_online.repository.AnswerRepository;
-import com.example.exam_online.repository.ExamRepository;
-import com.example.exam_online.repository.QuestionRepository;
-import com.example.exam_online.repository.ResultRepository;
+import com.example.exam_online.repository.*;
 import com.example.exam_online.request.CreateExamRequest;
 import com.example.exam_online.request.EditExamRequest;
 import com.example.exam_online.request.HandleExamRequest;
+import com.example.exam_online.response.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,6 +30,8 @@ public class ExamService {
     private AnswerRepository answerRepository;
     @Autowired
     private ResultRepository resultRepository;
+    @Autowired
+    private RoomExamUserRepository roomExamUserRepository;
 
     public void deleteExam(Exam exam) {
         examRepository.delete(exam);
@@ -151,5 +152,13 @@ public class ExamService {
         result.setIdUser(userId);
         result.setTotalScore(totalPoints);
         resultRepository.save(result);
+    }
+
+    public void saveRoomExamUser(RoomExamUser roomExamUser) {
+        roomExamUserRepository.save(roomExamUser);
+    }
+
+    public boolean isUserAllowedEnterRoom(@PathVariable long userId, @PathVariable long roomId) throws CustomException {
+        return roomExamUserRepository.isUserAllowedEnterRoom(userId, roomId).isPresent();
     }
 }

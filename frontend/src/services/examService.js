@@ -106,3 +106,17 @@ export const submitExam = async (examRequests) => {
         console.log(error?.response?.data); // delete when deploy
     }
 };
+
+
+export const isUserAllowedEnterRoom = async (userId, roomId) => {
+    try {
+        const res = await request.get(`/api/exam/isUserAllowedEnterRoom/${userId}/${roomId}`, {
+            headers: {
+                Authorization: `Bearer ${getCookie("jwt")}`,
+            },
+        })
+        return res?.data;
+    } catch (error) {
+        console.log(error?.response?.data); // delete when deploy
+    }
+};
