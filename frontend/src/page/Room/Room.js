@@ -95,20 +95,20 @@ function Room() {
                                     var doc = new jsPDF('p', 'pt');
                                     doc.setFont('helvetica')
 
-                                    doc.text( 'Score Board of ' + response.data[0].exam,220,40, { align: 'center' })
+                                    doc.text( 'Score Board of ' + response.data[0]?.exam,220,40, { align: 'center' })
                                     doc.text('ID User', 20, 60)
                                     doc.text('Username', 100, 60)
                                     doc.text('Score', 250, 60)
                                     let i = 80;
                                     response.data.map((e) => {
                                         doc.setFont('helvetica')
-                                        doc.text(e.idUser.toString(), 20, i)
-                                        doc.text(e.username, 100, i)
-                                        doc.text(e.score.toString(), 270, i)
+                                        doc.text(e?.idUser.toString(), 20, i)
+                                        doc.text(e?.username, 100, i)
+                                        doc.text(e?.score.toString(), 270, i)
                                         i = i + 20;
                                     });
 
-                                    doc.save('scoreboard-'+response.data[0].exam+'.pdf')
+                                    doc.save('scoreboard-'+response.data[0]?.exam+'.pdf')
                                             })
                                             .catch((error) => {
                                                 console.log(error);
