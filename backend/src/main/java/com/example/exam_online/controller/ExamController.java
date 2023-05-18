@@ -94,4 +94,16 @@ public class ExamController {
         ResponseHandler<List<Question>> responseHandler = new ResponseHandler<List<Question>>("", HttpStatus.OK.value(), questionList);
         return responseHandler;
     }
+
+    @GetMapping("/isUserAllowedEnterRoom/{userId}/{roomId}")
+    public ResponseHandler<Boolean> isUserAllowedEnterRoom(@PathVariable long userId, @PathVariable long roomId) throws CustomException {
+        ResponseHandler<Boolean> responseHandler;
+        if(examService.isUserAllowedEnterRoom(userId, roomId)) {
+            responseHandler = new ResponseHandler<Boolean>("is allowed", HttpStatus.OK.value(), true);
+        }
+        else {
+            responseHandler = new ResponseHandler<Boolean>("is not allowed", HttpStatus.OK.ordinal(), false);
+        }
+        return responseHandler;
+    }
 }

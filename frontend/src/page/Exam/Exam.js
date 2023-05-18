@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { findQuestionsByExamId } from '~/services/questionnaireService';
-import { findExamById, submitExam } from '~/services/examService';
+import { findExamById, isUserAllowedEnterRoom, submitExam } from '~/services/examService';
 import { findRoomByRoomId, findTimeByExamId } from '~/services/roomService';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '~/utils/cookie';
 
-function Exam() {
+function Exam() {    
     let navigate = useNavigate();
     const [questions, setQuestions] = useState([]);
     const [time, setTime] = useState(0);
@@ -17,14 +17,24 @@ function Exam() {
     const [examId, setExamId] = useState(undefined);
     const [isOpen, setIsOpen] = useState(false);
     const [result, setResult] = useState({});
+    const user = JSON.parse(localStorage.getItem('dbUser'));
 
+    useEffect(() => {
+        const roomId = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
+        const user = JSON.parse(localStorage.getItem('dbUser'));
+        isUserAllowedEnterRoom(user?.idUser, roomId).then((e) => {        
+            if (e?.data === false) {
+                navigate("/roomList")
+            }
+        })
+
+    }, [])
     const handleOpenModal = () => {
         setIsOpen(true);
     };
 
     const handleCloseModal = () => {
-        const roomId = window.location.href.substring(window.location.href.length - 1);
-
+        const roomId = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
         axios
             .put('http://localhost:8080/room/' + roomId + '/leave', { userId: 124 }, {
                 headers: {                    
@@ -32,7 +42,6 @@ function Exam() {
                 },
             })
             .then((response) => {
-                console.log(response.data);
                 setIsOpen(false);
                 navigate('/roomList');
             })
@@ -88,7 +97,6 @@ function Exam() {
             answer_id: event.target.value,
             point_per_question: point,
         };
-        console.log(tmp);
         setRequestParams(tmp);
     };
 
@@ -97,12 +105,11 @@ function Exam() {
             return requestParams[key];
         });
         const saveResultRequest = {
-            examId: 1,
-            userId: 1,
+            examId: examId,
+            userId: user?.idUser,
             handleExamRequests: array,
         };
         submitExam(saveResultRequest).then((e) => {
-            console.log(e?.data);
             setResult(e?.data);
             // alert(JSON.stringify(e?.data))
             handleOpenModal();
