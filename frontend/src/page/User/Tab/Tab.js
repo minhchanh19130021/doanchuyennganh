@@ -3,6 +3,7 @@ import AddExam from './AddExam';
 import DeleteExam from './DeleteExam';
 import EditExam from './EditExam';
 import FullExam from './FullExam';
+import ListRoom from './ListRoom';
 
 function Tab() {
     const [toggleState, setToggleState] = useState(1);
@@ -61,7 +62,7 @@ function Tab() {
                             : 'w-full cursor-pointer  select-none rounded-xl bg-transparent px-3 py-[6px] text-center text-[#52637a]'
                     }
                 >
-                    Chưa biết đặt
+                    Danh sách phòng
                 </li>
             </ul>
             <div className="tab-content">
@@ -107,14 +108,8 @@ function Tab() {
                             ? 'animate-fadeBottomMobile flex flex-col items-center justify-center pb-10 pt-16'
                             : 'hidden'
                     }
-                >
-                    <img
-                        src="https://nhathuoclongchau.com.vn/frontend_v3/images/empty-chitiet.png"
-                        alt="non-order"
-                    />
-                    <p className="mt-4 text-base font-bold">
-                        Quý khách chưa có đơn hàng nào 5
-                    </p>
+                >                 
+                   <ListRoom></ListRoom>
                 </div>
             </div>
         </>
