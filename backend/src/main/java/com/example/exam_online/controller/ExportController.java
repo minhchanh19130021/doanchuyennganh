@@ -33,6 +33,9 @@ public class ExportController {
     private ExamService examService;
     @PostMapping("/export/pdf")
     public ResponseHandler<List<ScoreBoard>> exportToPDF(@RequestBody ExportScoreRequest exportScoreRequest) throws DocumentException, IOException {
+        if(exportScoreRequest.getRoomId() == null || exportScoreRequest.getExamId() == null){
+            return new ResponseHandler<List<ScoreBoard>>("RoomId or ExamId is null", 200, new ArrayList<>());
+        }
         List<Long> userIds = userService.getUserIds(exportScoreRequest.getRoomId());
         List<User> users = userService.findUserByIds(userIds);
         Exam exam = examService.findById(exportScoreRequest.getExamId());
@@ -41,6 +44,6 @@ public class ExportController {
             list.add(new ScoreBoard(user.getIdUser(),user.getUsername(), resultService.getScore(Math.toIntExact(user.getIdUser()), Math.toIntExact(exam.getId())), exam.getTitle()));
         });
 
-return new ResponseHandler<List<ScoreBoard>>("Success", 200, list);
+        return new ResponseHandler<List<ScoreBoard>>("Success", 200, list);
     }
 }
