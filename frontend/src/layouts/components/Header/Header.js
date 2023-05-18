@@ -82,7 +82,7 @@ function Header() {
                         onClick={()=>{
                             localStorage.removeItem("dbUser")
                             document.cookie = ' jwt =; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                            navigate('/')
+                            navigate('/signin')
                         }}
                         >
                             Đăng xuất</button>

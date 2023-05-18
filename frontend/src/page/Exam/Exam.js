@@ -36,7 +36,7 @@ function Exam() {
     const handleCloseModal = () => {
         const roomId = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
         axios
-            .put('http://localhost:8080/room/' + roomId + '/leave', { userId: 124 }, {
+            .put('http://localhost:8080/room/' + roomId + '/leave', { userId: user?.idUser }, {
                 headers: {                    
                     Authorization: `Bearer ${getCookie("jwt")}`,
                 },

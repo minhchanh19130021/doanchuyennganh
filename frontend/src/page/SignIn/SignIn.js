@@ -1,12 +1,24 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function SignIn() {
     let navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const notifyWarning = (msg) => {
+        toast.warning(msg, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -26,7 +38,7 @@ function SignIn() {
                 navigate('/');
             })
             .catch((error) => {
-                console.log(error);
+                alert('Sai thông tin đăng nhập');
             });
         // console.log(Username: ${username} Password: ${password});
     };
