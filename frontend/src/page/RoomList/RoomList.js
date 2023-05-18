@@ -87,7 +87,7 @@ function RoomList() {
                             <Card
                                 nameRoom={`Phòng Thi ${room?.id}`}
                                 idRoom={`NLU${room?.id}`}
-                                time="120 phút"
+                                time={`${Math.ceil(room?.seconds / 60)} phút`}
                                 numberQuestion="20"
                                 status={`${room?.status}`}
                             >
