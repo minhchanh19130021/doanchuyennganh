@@ -93,8 +93,8 @@ function EditExam() {
                             ></div>
                             <div className="flex min-h-screen items-center px-4 py-8">
                                 <div className="relative mx-auto  h-[800px] w-full overflow-scroll rounded-md bg-white p-4 shadow-lg">
-                                    <div className="mb-8 grid grid-cols-2 gap-4">
-                                        <div>
+                                    <div className="mb-8 grid grid-cols-1 gap-4">
+                                        {/* <div>
                                             <label
                                                 htmlFor="first_name"
                                                 className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -106,7 +106,7 @@ function EditExam() {
                                                 id="first_name"
                                                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                             />
-                                        </div>
+                                        </div> */}
                                         <div>
                                             <label
                                                 htmlFor="last_name"
