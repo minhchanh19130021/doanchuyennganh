@@ -117,11 +117,11 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsername1(username) != null;
     }
 
     public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.existsByEmail1(email) != null;
     }
 
     public List<Long> getUserIds(Long roomId) {
