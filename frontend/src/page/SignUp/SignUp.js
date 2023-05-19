@@ -56,6 +56,7 @@ function SignUp() {
           username: Yup.string()
             .min(2, "Độ dài tối thiếu 2 kí tự")
             .max(15, "Độ dài tối đa 50 kí tự")
+            .matches(/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/, 'Tên người dùng chỉ được chứa chữ cái và chữ số')
             .required("Vui lòng nhập thông tin!"),
           email: Yup.string()
             .email("Vui lòng nhập đúng định dạng email!")
