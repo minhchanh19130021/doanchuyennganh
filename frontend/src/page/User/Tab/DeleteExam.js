@@ -74,7 +74,7 @@ function DeleteExam() {
                                             onClick={async() => {
                                                 await examService.deleteExam(examId).then((res)=>{
                                                     console.log(res)
-                                                    if(res.status === 200){
+                                                    if(res?.status === 200){
                                                         // notifySuccess("Xóa thành công")
                                                         setShowModal(false)
                                                         navigate(0);

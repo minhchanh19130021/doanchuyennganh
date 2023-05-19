@@ -12,4 +12,5 @@ public class UserDto implements  IEntityResponse{
     private String email;
     private boolean isActive;
     private String role;
+    private String username;
 }
