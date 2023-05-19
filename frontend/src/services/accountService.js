@@ -21,5 +21,6 @@ export const register = async(user)=>{
                 timer : 1000
             });  
         }
+        
 }
 
