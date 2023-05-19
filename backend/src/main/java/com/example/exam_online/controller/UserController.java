@@ -43,11 +43,11 @@ public class UserController {
     private JwtTokenProvider tokenProvider;
 
     @GetMapping("/findUser/{userId}")
-    public ResponseHandler<User> findUserById(@PathVariable Long userId) throws CustomException {
+    public ResponseHandler<UserDto> findUserById(@PathVariable Long userId) throws CustomException {
         User user = userService.findById(userId);
         UserDto userDto = mapper.map(user, UserDto.class);
-        ResponseHandler<User> responseHandler = new ResponseHandler<User>("successfully found user",
-                                                                                HttpStatus.OK.value(), user);
+        ResponseHandler<UserDto> responseHandler = new ResponseHandler<UserDto>("successfully found user",
+                                                                                HttpStatus.OK.value(), userDto);
         return responseHandler;
     }
 

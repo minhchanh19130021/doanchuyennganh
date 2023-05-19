@@ -81,38 +81,7 @@ function User() {
                                 <p className="text-[#334155]">
                                    Thông tin cá nhân
                                 </p>
-                            </div>
-                            <div
-                                onClick={() => toggleTab(3)}
-                                className={
-                                    toggleState === 3
-                                        ? 'hover:transition-basic mb-3 flex cursor-pointer items-center rounded-lg border border-transparent bg-[#edf2f8] px-2 py-2 hover:border-[#072d94]'
-                                        : 'hover:transition-basic mb-3 flex cursor-pointer items-center rounded-lg border border-transparent bg-transparent px-2 py-2 hover:border-[#072d94]'
-                                }
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className={
-                                        toggleState === 3
-                                            ? 'mr-2 h-6 w-6 text-[#072d94]'
-                                            : 'mr-2 h-6 w-6 rounded-full bg-[#edf2f8] text-[#c1bcbd]'
-                                    }
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-                                    />
-                                </svg>
-
-                                <p className="text-[#334155]">
-                                   Tab 3
-                                </p>
-                            </div>
+                            </div>                         
                         </div>
                     </div>
                     {/* tab content */}

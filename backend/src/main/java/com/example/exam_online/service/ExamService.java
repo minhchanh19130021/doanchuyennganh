@@ -43,7 +43,16 @@ public class ExamService {
 
     public List<Exam> findExamsByUserId(Long userId) throws CustomException {
         List<Exam> examList =
-                examRepository.findAll().stream().filter(e -> e.getAuditInfo().getCreateUserId() == userId).collect(Collectors.toList());
+                examRepository
+                        .findAll()
+                        .stream()
+                        .filter(e -> {
+                            if(e.getAuditInfo().getCreateUserId() == null) {
+                                return false;
+                            }
+                            else {
+                                return e.getAuditInfo().getCreateUserId().equals(userId);
+                            }}).collect(Collectors.toList());
         if (examList.size() != 0) {
             return examList;
         }
