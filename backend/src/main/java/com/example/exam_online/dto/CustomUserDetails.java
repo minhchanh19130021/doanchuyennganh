@@ -48,6 +48,6 @@ public class CustomUserDetails implements UserDetails, IEntityResponse{
 
     @Override
     public boolean isEnabled() {
-        return user.isActive();
+        return true;
     }
 }
